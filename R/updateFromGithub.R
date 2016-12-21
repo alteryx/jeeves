@@ -1,8 +1,16 @@
 #' Update SVN with R package or HtmlPlugin from Github
 #' 
 #' @param name name of the package or plugin to update.
-#' @param svnDir path to the root of the svn directory.
+#' @param svnDir path to the root of the svn branch directory.
 #' @export
+#' @section Update Plugin from Github:
+#' This function tries to automate the following manual sequence of steps.
+#' \enumerate{
+#'   \item Download zip file from github.
+#'   \item Unzip it and rename it (remove the -master suffix).
+#'   \item Delete the Extras subfolder contained in it.
+#'   \item Copy the folder over to SVN.
+#' }
 #' @examples 
 #' # Set path to your SVN directory using options(alteryx.svndir = <path>)
 #' updatePackageFromGithub('AlteryxPredictive')
