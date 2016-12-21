@@ -11,10 +11,11 @@ saveManifest(svnDir = getOption("alteryx.svndir"), rVersion = "3.2.3")
 }
 \description{
 A detailed manifest of all R package installed in the SVN directory specified
-by \code{svnDir} is built and saved to
-\code{3rdParty\R\Scripts\packages.csv}. A plain list of R packages installed 
-is also saved to \code{3rdParty\R\Installer\Readme.txt} Note that both the 
-manifest and the Readme are built based on packages installed in the R
-library in the SVN directory and hence should not be manipulated manually.
+by \code{svnDir} is built and saved to 
+\code{3rdParty\\R\\Scripts\\packages.csv}. A plain list of R packages
+installed is also saved to \code{3rdParty\\R\\Installer\\Readme.txt} Note
+that both the manifest and the Readme are built based on packages installed
+in the R library in the SVN directory and hence should not be manipulated
+manually.
 }
 
