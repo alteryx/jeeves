@@ -225,31 +225,3 @@ copyXDFFiles <- function(svnDir = getOption('alteryx.svndir'),
   copy_dir(xdf_macros, file.path(pluginDir, 'Macros', 'XDF_Macros'))
   copy_dir(xdf_samples, file.path(pluginDir, 'Samples', 'XDF_Samples'))
 }
-
-#' Update R package from Github
-#' 
-#' @param pkg name of the package.
-#' @param svnDir path to the root of the svn directory.
-#' @examples 
-#' updatePackageFromGithub('AlteryxPredictive')
-updatePackageFromGithub <- function(pkg, svnDir = getOption('alteryx.svndir')){
-  if (is.null(svnDir) || !dir.exists(svnDir)){
-    stop("Invalid SVN directory specified.")
-  }
-  ayxPackagesDir <- file.path(svnDir, 'Alteryx', 'Plugins', 'AlteryxRPackage')
-  if (dir.exists(file.path(ayxPackagesDir, pkg))){
-    stop("Please delete the existing package on SVN before proceeding.")
-  } else {
-    dlPath <- sprintf("http://github.com/alteryx/%s/archive/master.zip", pkg)
-    tempDir <- tempdir()
-    tf <- file.path(tempDir, paste0(pkg, '.zip'))
-    message("Download ", dlPath, ' to ', tf)
-    downloader::download(dlPath, tf)
-    unzip(tf, exdir = ayxPackagesDir)
-    file.rename(
-      file.path(ayxPackagesDir, paste0(pkg, '-master')), 
-      file.path(ayxPackagesDir, pkg)
-    )
-    return(file.path(ayxPackagesDir, pkg))
-  }
-}
