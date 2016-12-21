@@ -38,11 +38,12 @@ installToSvn <- function(srcPkg, to_install = TRUE, rVersion = '3.2.3'){
 #' Save manifest of R packages installed.
 #' 
 #' A detailed manifest of all R package installed in the SVN directory specified
-#' by \code{svnDir} is built and saved to
-#' \code{3rdParty\R\Scripts\packages.csv}. A plain list of R packages installed 
-#' is also saved to \code{3rdParty\R\Installer\Readme.txt} Note that both the 
-#' manifest and the Readme are built based on packages installed in the R
-#' library in the SVN directory and hence should not be manipulated manually.
+#' by \code{svnDir} is built and saved to 
+#' \code{3rdParty\\R\\Scripts\\packages.csv}. A plain list of R packages
+#' installed is also saved to \code{3rdParty\\R\\Installer\\Readme.txt} Note
+#' that both the manifest and the Readme are built based on packages installed
+#' in the R library in the SVN directory and hence should not be manipulated
+#' manually.
 #' @param string indicating version of R
 #' @export
 saveManifest <- function(
