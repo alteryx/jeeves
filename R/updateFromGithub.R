@@ -4,6 +4,7 @@
 #' @param svnDir path to the root of the svn directory.
 #' @export
 #' @examples 
+#' # Set path to your SVN directory using options(alteryx.svndir = <path>)
 #' updatePackageFromGithub('AlteryxPredictive')
 #' updatePluginFromSvn('Linear_Regression')
 updatePackageFromGithub <- function(name, svnDir = getOption('alteryx.svndir')){

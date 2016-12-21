@@ -18,6 +18,7 @@ updatePluginFromGithub(name, svnDir = getOption("alteryx.svndir"))
 Update SVN with R package or HtmlPlugin from Github
 }
 \examples{
+# Set path to your SVN directory using options(alteryx.svndir = <path>)
 updatePackageFromGithub('AlteryxPredictive')
 updatePluginFromSvn('Linear_Regression')
 }
