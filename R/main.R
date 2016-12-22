@@ -110,9 +110,10 @@ copyHtmlPlugin <- function(pluginDir = ".", ayxDir = getAyxDirs()){
   ayxPluginFiles <- list.files(ayxPluginDir, full.names = TRUE)
   ayxPluginFiles <- ayxPluginFiles[!grepl(dirs$macros, ayxPluginFiles)]
   if (length(ayxPluginFiles) > 0){
+    f <- basename(ayxPluginFiles) %in% basename(pluginFiles)
     pluginFilesToUpdate <- pluginFiles[
-      file.mtime(pluginFiles) > file.mtime(ayxPluginFiles)
-      ]
+      file.mtime(pluginFiles) > file.mtime(ayxPluginFiles)[f]
+    ]
   } else {
     pluginFilesToUpdate <- pluginFiles
   }
