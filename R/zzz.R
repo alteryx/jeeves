@@ -11,12 +11,15 @@
       alteryx.svndir = "/Volumes/C/Users/ramnath/Desktop/SVN_Full_Repos/Predictive_Development"
       dev.dir = "~/Desktop/SNIPPETS"
     }
-    setOption <- function(k, v){
-      if (is.null(getOption(k))) options(k = v)
+    if (is.null(getOption('alteryx.svndir'))) {
+      options(alteryx.svndir = alteryx.svndir)
     }
-    setOption('alteryx.svndir', alteryx.svndir)
-    setOption('alteryx.path', alteryx.path)
-    setOption('dev.dir', dev.dir)
+    if (is.null(getOption('alteryx.path'))) {
+      options(alteryx.path = alteryx.path)
+    }
+    if (is.null(getOption('dev.dir'))) {
+      options(dev.dir = dev.dir)
+    }
   } else {
     # options(error = dump_and_quit)
   }
