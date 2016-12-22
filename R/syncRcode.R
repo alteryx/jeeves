@@ -16,7 +16,9 @@ insertRcode <- function(template, rfile, outFile = template,
   if (length(xmlChildren(x[[n]])) > 0){
     removeChildren(x[[n]], .all=TRUE)
   }
-  rcode <- paste(paste(readLines(rfile), collapse = '\n'), '\n', collapse = '')
+  rcode <- paste(paste(readLines(rfile, warn = FALSE), collapse = '\n'), 
+    '\n', collapse = ''
+  )
   xmlValue(x[[n]]) <- gsub("#_#", "", rcode)
   saveXML(xml, outFile)
   message('Inserted R code from ', rfile, ' into ', outFile)

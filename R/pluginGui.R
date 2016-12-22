@@ -54,7 +54,7 @@ writeGuiHtmlFromLayout <- function(pluginDir = '.', htmlFile = NULL, overrides =
     htmlFile <- file.path(pluginDir, sprintf("%sGui.html", pluginName))
   }
   mylayout <- paste(
-    readLines(file.path(pluginDir, dirs$extras, 'Gui', 'layout.html')), 
+    readLines(file.path(pluginDir, dirs$extras, 'Gui', 'layout.html'), warn = F), 
     collapse = '\n'
   )
   yxmcFile <- file.path(

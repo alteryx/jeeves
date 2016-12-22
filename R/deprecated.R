@@ -60,7 +60,7 @@ createNewPlugin <- function(plugin_name, template = 'TemplatePlugin'){
   })
   
   d2 <- list.files(pattern = ".xml")
-  d2_contents <- readLines(d2, warn = F)
+  d2_contents <- readLines(d2, warn = FALSE)
   d2_contents_new <- gsub(template, plugin_name, d2_contents)
   writeLines(d2_contents_new, d2)
 }

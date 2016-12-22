@@ -86,7 +86,7 @@ installAlteryx <- function(installers){
 listInstalledPackages <- function(){
   rdirs <- getAyxSvnRDirs()
   readmeFile = file.path(rdirs$installer, "Readme.txt")
-  pkgs <- readLines(readmeFile)
+  pkgs <- readLines(readmeFile, warn = FALSE)
   ayxPkgs <- grep("^Alteryx", pkgs, value = TRUE)
   list(
     cran = setdiff(pkgs, ayxPkgs),

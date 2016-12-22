@@ -141,7 +141,7 @@ docx2kit <- function(docx, yxmd, extract_media = TRUE, ...){
 
 
 createScreenshotWorkflow <- function(yxmd, output){
-  d <- paste(readLines(yxmd), collapse = '\n')
+  d <- paste(readLines(yxmd, warn = FALSE), collapse = '\n')
   d2 <- gsub(
     'TextColor name="Black"', 
     'TextColor name="White"',
@@ -180,7 +180,7 @@ makeTutorial <- function(docx, title = "Tutorial", preview = FALSE, standalone =
   
   library(whisker)
   tplFile <- system.file('starterkit', 'tutorial', 'tpl.html', package = 'jeeves')
-  tpl <- paste(readLines(tplFile), collapse = '\n')
+  tpl <- paste(readLines(tplFile, warn = FALSE), collapse = '\n')
   d <- whisker.render(
     tpl,
     list(
