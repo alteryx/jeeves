@@ -10,10 +10,20 @@
 #' @param ... additional arguments to pass to createPluginFromMacro
 #' @export
 updatePlugin <- function(pluginDir = ".", ...){
+  pluginName <- basename(normalizePath(pluginDir))
   with_dir_(pluginDir, {
     insertRcode2()
     createPluginFromMacro(pluginDir = ".", ...)
     copyHtmlPlugin()
+    if (dir.exists('assets')){
+      assetDir <- file.path(getAyxDirs()$htmlplugin, pluginName, 'assets')
+      if (!dir.exists(assetDir)) dir.create(assetDir, recursive = TRUE)
+      file.copy(
+        list.files(file.path(".", 'assets'), full.names = T), 
+        assetDir, 
+        recursive = TRUE
+      )
+    }
   })
 }
 
@@ -119,7 +129,7 @@ copyHtmlPlugin <- function(pluginDir = ".", ayxDir = getAyxDirs()){
   }
   if (length(pluginFilesToUpdate) > 0){
     message('Copying\n  ',  paste(pluginFilesToUpdate, collapse = "\n  "), 
-            '\nto HtmlPlugins'
+      '\nto HtmlPlugins'
     )
     file.copy(pluginFilesToUpdate, ayxPluginDir, recursive = TRUE)
   } else {
