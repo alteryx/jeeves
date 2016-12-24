@@ -117,6 +117,14 @@ renderAyxWidgets <- function(config){
   do.call(tagList, lapply(d2, ayxPluginWidget))
 }
 
+renderAyxWidgets2 <- function(config){
+  d2 <- lapply(seq_along(config), function(i){
+    config[[i]]$dataName = names(config)[i]; 
+    config[[i]]
+  })
+  lapply(d2, ayxPluginWidget)
+}
+
 makePage <- function(config, layout = NULL){
   config <- lapply(seq_along(config), function(i){
     config[[i]]$id = names(config)[i]
@@ -204,4 +212,38 @@ ayxPluginWidget = function(x){
     },
     tag('alteryx-pluginwidget', x)
   )
+}
+
+#' @export
+getConfigFromLayout <- function(pluginDir = '.', htmlFile = NULL, 
+    overrides = NULL){
+  dirs <- dirNames()
+  pluginDir <- normalizePath(pluginDir)
+  pluginName <- basename(pluginDir)
+  if (is.null(htmlFile)){
+    htmlFile <- file.path(pluginDir, sprintf("%sGui.html", pluginName))
+  }
+  mylayout <- paste(
+    readLines(file.path(pluginDir, dirs$extras, 'Gui', 'layout.html'), warn = F), 
+    collapse = '\n'
+  )
+  yxmcFile <- file.path(
+    pluginDir, dirs$macros, sprintf("%s.yxmc", pluginName)
+  )
+  x1 <- extractConfiguration(yxmcFile)
+  ov <- file.path(pluginDir, dirs$extras, "Gui", "overrides.yaml")
+  if (file.exists(ov)){
+    overrides <- yaml::yaml.load_file(ov)
+  }
+  if (!is.null(overrides)){
+    x1 <- modifyList(x1, overrides)
+  }
+  x1b <- lapply(seq_along(x1), function(i){
+    x1[[i]]$id = names(x1)[i]
+    x1[[i]]
+  })
+  names(x1b) <- names(x1)
+  w = renderAyxWidgets2(x1b)
+  names(w) = names(x1b)
+  return(w)
 }
