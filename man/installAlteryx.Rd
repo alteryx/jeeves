@@ -10,7 +10,7 @@ installAlteryx(installers)
 \item{installers}{list of paths to named installers.}
 }
 \description{
-This function installs Alteryx and optionally, the Predictive Tools using the
+Install Alteryx and optionally, the Predictive Tools using the
 command line SDK. It does a silent install skipping through all dialogs and
 accepting all defaults.
 }

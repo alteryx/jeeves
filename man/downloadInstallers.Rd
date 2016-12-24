@@ -2,7 +2,7 @@
 % Please edit documentation in R/installAlteryx.R
 \name{downloadInstallers}
 \alias{downloadInstallers}
-\title{Download Installers from the Build Repo}
+\title{Download Installers}
 \usage{
 downloadInstallers(buildRepo = "\\\\\\\\DEN-IT-FILE-07\\\\BuildRepo",
   to = ".", buildDir = NULL, branch = "Predictive_Dev", type = "Server",
@@ -21,6 +21,6 @@ downloadInstallers(buildRepo = "\\\\\\\\DEN-IT-FILE-07\\\\BuildRepo",
 'Gallery', NonAdmin' or ''.}
 }
 \description{
-Download Installers from the Build Repo
+Downloads installers automatically from the build repository.
 }
 

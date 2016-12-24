@@ -4,10 +4,16 @@
 \alias{getAyxSvnRDirs}
 \title{Get Alteryx R SVN Directories}
 \usage{
-getAyxSvnRDirs(svnDir = getOption("alteryx.svndir"), rVersion = "3.2.3")
+getAyxSvnRDirs(svnDir = getOption("alteryx.svndir"), rVersion = NULL)
 }
 \arguments{
 \item{svnDir}{svn directory}
+
+\item{rVersion}{optional argument to specify an R version.}
+}
+\value{
+a named list containing paths to the R library and
+  \code{3rdParty//R//Installer} on SVN
 }
 \description{
 Get Alteryx R SVN Directories
