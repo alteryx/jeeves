@@ -20,8 +20,8 @@ insertRcode <- function(template, rfile, outFile = template,
     '\n', collapse = ''
   )
   xmlValue(x[[n]]) <- gsub("#_#", "", rcode)
+  message('Inserting R code from ', rfile, ' into ', outFile)
   saveXML(xml, outFile)
-  message('Inserted R code from ', rfile, ' into ', outFile)
 }
 
 #' Syntactic sugar for insertRcode to cover the most common usage pattern.
