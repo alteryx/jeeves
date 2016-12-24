@@ -1,0 +1,11 @@
+---
+title: "Introduction to Jeeves"
+author: "Ramnath Vaidyanathan"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+__Jeeves__ is your sagacious personal valet to build and maintain predictive tools in Alteryx.
