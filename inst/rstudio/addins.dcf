@@ -1,0 +1,4 @@
+Name: Build and Install HtmlPlugin
+Description: Runs updatePlugin on the current plugin
+Binding: updatePlugin
+Interactive: false
