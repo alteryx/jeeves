@@ -46,7 +46,8 @@ writeGuiHtml <- function(pluginDir = '.', htmlFile = NULL, overrides = NULL){
 #' 
 #' @inheritParams writeGuiHtml
 #' @export
-writeGuiHtmlFromLayout <- function(pluginDir = '.', htmlFile = NULL, overrides = NULL){
+writeGuiHtmlFromLayout <- function(pluginDir = '.', htmlFile = NULL, 
+    overrides = NULL){
   dirs <- dirNames()
   pluginDir <- normalizePath(pluginDir)
   pluginName <- basename(pluginDir)
