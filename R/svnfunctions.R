@@ -121,11 +121,20 @@ copyHtmlPluginToSvn <- function(pluginDir = "."){
 #' 
 #' 
 #' @param svnDir svn directory
+#' @param rVersion optional argument to specify an R version.
+#' @return a named list containing paths to the R library and
+#'   \code{3rdParty//R//Installer} on SVN
 #' @export
-getAyxSvnRDirs <- function(svnDir = getOption("alteryx.svndir"), rVersion = '3.2.3'){
+getAyxSvnRDirs <- function(svnDir = getOption("alteryx.svndir"), rVersion = NULL){
+  if (is.null(rVersion)) {
+    rver <- R.Version()
+    rVersion = paste(rver$major, rver$minor, sep = ".")
+  }
   rPath <- file.path(svnDir, "3rdParty", "R")
   list(
-    lib = file.path(rPath, 'R_Installed_Files', paste0('R-', rVersion), 'library'),
+    lib = file.path(rPath, 'R_Installed_Files', 
+      paste0('R-', rVersion), 'library'
+    ),
     installer = file.path(rPath, 'Installer')
   )
 }

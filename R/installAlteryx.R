@@ -1,33 +1,6 @@
-#' Copy predictive macros, samples and plugins from SVN
+#' Download Installers 
 #' 
-#' @param to directory to copy files to
-#' @export
-copyAlteryxRPlugin <- function(to = NULL){
-  if (is.null(to)){
-    to <- file.path(getOption('dev.dir'), 'dev', 'AlteryxRPlugin')
-  }
-  pluginDir <- file.path(getOption('alteryx.svndir'), 'Alteryx', 'Plugins',
-    'AlteryxRPlugin'
-  )
-  files_to_copy <- list.files(pluginDir, full.names = T, 
-      pattern = 'Macros|Samples|HtmlPlugins')
-  if (!(file.exists(to))) {
-    message("Creating directory ", to, "...")
-    dir.create(to, recursive = TRUE)
-  }
-  message("Copying files to ", to, "...")
-  file.copy(files_to_copy, to, recursive = TRUE)
-}
-
-runFromWindows <- function(){
-  if(.Platform$OS.type != "windows"){
-    stop("Please run this function from Windows", call. = FALSE)
-  }
-}
-
-
-#' Download Installers from the Build Repo
-#' 
+#' Downloads installers automatically from the build repository.
 #' @param buildRepo path to the build repo.
 #' @param to directory to download the installers to. defaults to working dir.
 #' @param buildDir the build directory. 
@@ -62,9 +35,10 @@ downloadInstallers <- function(buildRepo = "\\\\DEN-IT-FILE-07\\BuildRepo",
   )
 }
 
+
 #' Install Alteryx
 #' 
-#' This function installs Alteryx and optionally, the Predictive Tools using the
+#' Install Alteryx and optionally, the Predictive Tools using the
 #' command line SDK. It does a silent install skipping through all dialogs and
 #' accepting all defaults.
 #' @param installers list of paths to named installers.
@@ -82,9 +56,42 @@ installAlteryx <- function(installers){
   }
 }
 
+#' Copy predictive macros, samples and plugins from SVN
+#' 
+#' @param to directory to copy files to.
+#' @param svnDir path to svn branch.
+#' @export
+copyAlteryxRPlugin <- function(to = NULL, svnDir = getOption('alteryx.svndir')){
+  if (is.null(to)){
+    to <- file.path(getOption('dev.dir'), 'dev', 'AlteryxRPlugin')
+  }
+  pluginDir <- file.path(svnDir, 'Alteryx', 'Plugins', 'AlteryxRPlugin')
+  files_to_copy <- list.files(pluginDir, full.names = T, 
+      pattern = 'Macros|Samples|HtmlPlugins')
+  if (!(file.exists(to))) {
+    message("Creating directory ", to, "...")
+    dir.create(to, recursive = TRUE)
+  }
+  message("Copying files to ", to, "...")
+  file.copy(files_to_copy, to, recursive = TRUE)
+}
+
+runFromWindows <- function(){
+  if(.Platform$OS.type != "windows"){
+    stop("Please run this function from Windows", call. = FALSE)
+  }
+}
+
+
+
+"2016-12-23 15:43:36"
+
 # List all installed packages
-listInstalledPackages <- function(){
-  rdirs <- getAyxSvnRDirs()
+listInstalledPackages <- function(
+    svnDir = getOption('alteryx.svndir'),
+    rVersion = NULL                                
+  ){
+  rdirs <- getAyxSvnRDirs(svnDir = svnDir, rVersion = rVersion)
   readmeFile = file.path(rdirs$installer, "Readme.txt")
   pkgs <- readLines(readmeFile, warn = FALSE)
   ayxPkgs <- grep("^Alteryx", pkgs, value = TRUE)
