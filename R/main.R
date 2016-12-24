@@ -11,6 +11,7 @@
 #' @export
 updatePlugin <- function(pluginDir = ".", ...){
   pluginName <- basename(normalizePath(pluginDir))
+  message("Building and installing htmlplugin ", pluginName)
   with_dir_(pluginDir, {
     insertRcode2()
     createPluginFromMacro(pluginDir = ".", ...)
