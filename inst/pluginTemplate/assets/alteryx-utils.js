@@ -19,16 +19,6 @@ function makeDataItem(manager, AlteryxDataItems) {
 
     var value = void 0;
     var dtype = type;
-    /*
-    if (props.values) {
-      dtype = props.values.constructor === Array
-        ? 'MultiStringSelector'
-        : 'StringSelector';
-    } else {
-      dtype = type;
-    }
-    */
-    //console.log(dtype)
     var di = manager.GetDataItem(id);
     var newItem = di || new AlteryxDataItems[dtype]({ id: id, dataname: id });
     if (dtype === 'StringSelector' || dtype === 'MultiStringSelector') {
@@ -63,8 +53,6 @@ function displayTarget(targetId, di, cond) {
   var targetDiv = document.getElementById(targetId);
   function display(v) {
     targetDiv.style.display = condition(v) ? 'block' : 'none';
-    //console.log("Resizing ", v);
-    //window.dispatchEvent(new Event('resize'));
   }
   dataItem.BindUserDataChanged(display);
   display(dataItem.value);
@@ -74,30 +62,42 @@ function activateDisplayRules(rules){
   Object.keys(rules).map(function(k){
     var v = rules[k]
     if (typeof(v) === 'string'){
-      console.log(v)
       displayTarget(k, v)
     } else {
-      console.log(v)
       displayTarget(k, v[0], v[1])
     }
   })
 }
 
 /* Field Map and Setup Complete */
+function getDataTypes(x){
+  var numericTypes = [
+    'Int16', 'Int32', 'Int64', 'Float', 'Double', 'FixedDecimal', 'Byte'
+  ];
+  var stringTypes = [
+    'String', 'WString', 'V_String', 'V_WString'
+  ];
+  var res = []
+  if (x.indexOf('numeric') >= 0) res = res.concat(numericTypes)
+  if (x.indexOf('string') >= 0) res = res.concat(stringTypes)
+  return res
+}
+
 function makeFieldMap(id, allowedTypes){
   var manager = Alteryx.Gui.manager
   var metaInfo0 = manager.metaInfo.Get(0)
+  var fields;
   if (metaInfo0){
-    var fields = metaInfo0._GetFields()
-      .filter(d => allowedTypes.indexOf(d.strType) >= 0)
-      .map(d => d.strName)
+    fields = metaInfo0._GetFields()
+      .filter(d => getDataTypes(allowedTypes).indexOf(d.strType) >= 0)
+      .map(d => d.strName);
   } else {
-    var fields = []
+    fields = [];
   }
   var di = manager.GetDataItem(id);
   di.setStringList(fields.map(function(d){
-    return {uiobject: d, dataname: d}
-  }), true)
+    return {uiobject: d, dataname: d};
+  }), true);
 }
 
 function handleSetupComplete(){
@@ -186,7 +186,7 @@ function setupToggleBar(dname){
   var x = manager.GetDataItem(dname)
   syncRadio(dname)
   function setToggle(v){
-    console.log("#id-" + v)
+    //console.log("#id-" + v)
     $('#id-' + dname +  ' .toggletab').removeClass('is-tab-selected')
     $(jq("id-" + v)).addClass('is-tab-selected')
   }
@@ -216,7 +216,7 @@ function handleToggles(curToggle){
   myToggle.addClass('accordion-open');
   myToggle.next().addClass('default');
   $('.dt-accordion').find('.accordion-toggle').click(function(){
-    console.log($(this).attr('id'));
+    //console.log($(this).attr('id'));
     curToggle.setValue($(this).attr('id'));
     $(this).toggleClass('accordion-open');
     $('.accordion-toggle').not($(this)).removeClass('accordion-open');
