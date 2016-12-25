@@ -215,18 +215,14 @@ ayxPluginWidget = function(x){
 }
 
 #' @export
-getConfigFromLayout <- function(pluginDir = '.', htmlFile = NULL, 
-    overrides = NULL){
+renderPluginWidgets <- function(pluginDir = '.', htmlFile = NULL, 
+    overrides = NULL, wrapInDiv = FALSE){
   dirs <- dirNames()
   pluginDir <- normalizePath(pluginDir)
   pluginName <- basename(pluginDir)
   if (is.null(htmlFile)){
     htmlFile <- file.path(pluginDir, sprintf("%sGui.html", pluginName))
   }
-  mylayout <- paste(
-    readLines(file.path(pluginDir, dirs$extras, 'Gui', 'layout.html'), warn = F), 
-    collapse = '\n'
-  )
   yxmcFile <- file.path(
     pluginDir, dirs$macros, sprintf("%s.yxmc", pluginName)
   )
@@ -245,5 +241,11 @@ getConfigFromLayout <- function(pluginDir = '.', htmlFile = NULL,
   names(x1b) <- names(x1)
   w = renderAyxWidgets2(x1b)
   names(w) = names(x1b)
-  return(w)
+  if (!wrapInDiv){
+    return(w)
+  } else {
+    lapply(w, function(d){
+      div(id = paste0('div-', makeHtmlId(d[[3]]$attribs$id)), d)
+    })
+  }
 }
