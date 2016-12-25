@@ -18,9 +18,9 @@ listPredictiveMacros <- function(...){
   dir(getPathToPredictiveMacros(), pattern = '\\.yxmc$', ...)
 }
 
-getPathToPredictiveMacros <- function(){
+getPathToPredictiveMacros <- function(rVersion = '3.3.2'){
   alteryx = getOption('alteryx.path')
-  file.path(alteryx, paste0('R-', '3.2.3'), 'plugin', 'Macros', 
+  file.path(alteryx, paste0('R-', rVersion), 'plugin', 'Macros', 
     'Predictive Tools'
   )
 }
@@ -119,7 +119,7 @@ copyMacro <- function(macro, todir = '.', repo = 'svn', ...){
 }
 
 
-copyPredictiveAndHelperMacros <- function(macro, pluginDir = '.'){
+copyPredictiveAndHelperMacros <- function(macro, pluginDir = '.', rVersion){
   dirs <- dirNames()
   to <- file.path(pluginDir, dirs$macros)
   copyPredictiveMacro(macro, to = to, overwrite = TRUE)
@@ -127,7 +127,7 @@ copyPredictiveAndHelperMacros <- function(macro, pluginDir = '.'){
     pluginDir,
     sprintf("%sIcon.png", tools:::file_path_sans_ext(basename(macro)))
   )
-  p <- getPathToPredictiveMacros()
+  p <- getPathToPredictiveMacros(rVersion = rVersion)
   pred_tools_path = normalizePath(p)
   macroPath <- file.path(pred_tools_path, macro)
   extractIcon(macroPath, iconFile)
