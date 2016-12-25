@@ -149,12 +149,13 @@ jvAccordionItem <- function(title, ..., id = makeHtmlId(title)){
 
 #' @export
 jvMakeDataItemsToInitialize <- function(pluginDir = ".", curPage, 
-    curTab = NULL, curToggle = NULL){
+    curTab = NULL, curToggle = NULL, ...){
   items <- list(
     itemsToInitialize = Filter(Negate(is.null), list(
       curPage = curPage,
       curTab = curTab,
-      curToggle = curToggle
+      curToggle = curToggle,
+      ...
     )),
     toggleBarItems = getItemsOfType(
       'ToggleBar', pluginDir = pluginDir, toJSON = F
