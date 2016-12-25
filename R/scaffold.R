@@ -84,7 +84,7 @@ scaffoldPlugin <- function(pluginName, ...){
 #' @param macro name of the predictive macro
 #' @param ... additional arguments to pass on to createPluginFromMacro
 #' @family scaffold
-scaffoldPluginFromMacro <- function(macro, ...){
+scaffoldPluginFromMacro <- function(macro, rVersion = '3.3.2', ...){
   dirs <- dirNames()
   pluginDir <- basename(macro)
   scaffoldPlugin(pluginDir)
@@ -96,7 +96,7 @@ scaffoldPluginFromMacro <- function(macro, ...){
   if (file.exists(macroFileName)){
     file.copy(macroFileName, dirs$macros, overwrite = TRUE)
   } else {
-    copyPredictiveAndHelperMacros(basename(macroFileName))
+    copyPredictiveAndHelperMacros(basename(macroFileName), rVersion = rVersion)
   }
   
   extractRcode(
