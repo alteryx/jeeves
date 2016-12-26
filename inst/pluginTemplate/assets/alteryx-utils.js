@@ -54,19 +54,28 @@ function displayTarget(targetId, di, cond) {
   function display(v) {
     targetDiv.style.display = condition(v) ? 'block' : 'none';
   }
-  dataItem.BindUserDataChanged(display);
-  display(dataItem.value);
+  if (targetDiv === null){
+    console.log('div with id ' + targetId + 'not found...');
+    return;
+  } else {
+    dataItem.BindUserDataChanged(display);
+    display(dataItem.value);
+  }
 }
 
 function activateDisplayRules(rules){
-  Object.keys(rules).map(function(k){
-    var v = rules[k]
-    if (typeof(v) === 'string'){
-      displayTarget(k, v)
-    } else {
-      displayTarget(k, v[0], v[1])
-    }
-  })
+  if (Object.keys(rules).length === 0){
+    return;
+  } else {
+    Object.keys(rules).map(function(k){
+      var v = rules[k]
+      if (typeof(v) === 'string'){
+        displayTarget(k, v)
+      } else {
+        displayTarget(k, v[0], v[1])
+      }
+    })
+  }
 }
 
 /* Field Map and Setup Complete */
@@ -122,20 +131,28 @@ function handleSetupComplete(){
 
 /* Radio, ToggleBar and Initializing Items */
 function initializeDataItems(dataItem, items){
-  Object.keys(items).map(function(k){
-    var itemType = (typeof(items[k]) === "boolean") 
-      ? 'SimpleBool' 
-      : 'SimpleString';
-    dataItem(k, {value: items[k]}, itemType)
-  })
+  if (Object.keys(items).length === 0){
+    return;
+  } else {
+    Object.keys(items).map(function(k){
+      var itemType = (typeof(items[k]) === "boolean") 
+        ? 'SimpleBool' 
+        : 'SimpleString';
+      dataItem(k, {value: items[k]}, itemType);
+    });
+  }
 }
 
 function initializeRadioItems(dataItem, items){
-  Object.keys(items).forEach(function(d){
-    items[d].forEach(function(d2){
-      dataItem(d2, {value: d2 === items[d][0]}, 'SimpleBool')
-    })
-  })    
+  if (Object.keys(items).length === 0){
+    return;
+  } else {
+    Object.keys(items).forEach(function(d){
+      items[d].forEach(function(d2){
+        dataItem(d2, {value: d2 === items[d][0]}, 'SimpleBool');
+      });
+    });
+  }
 }
 
 function setupRadioGroups(manager, items){
@@ -169,9 +186,13 @@ function syncRadio(id){
 }
 
 function initializeToggleBarItems(dataItem, items){
-  Object.keys(items).forEach(function(k){
-    setupToggleBarItems(dataItem, k, items[k])
-  })
+  if (Object.keys(items).length === 0){
+    return;
+  } else {
+    Object.keys(items).forEach(function(k){
+      setupToggleBarItems(dataItem, k, items[k])
+    })
+  }
 }
 
 function setupToggleBarItems(dataItem, dname, values){
@@ -211,7 +232,25 @@ function getAnnotation(){
   return manager.GetDataItemByDataName("Model Name").value;
 }
 
+function handleTabs(curTab){
+  if (typeof curTab === 'undefined') return;
+  var activePage = curTab.getValue();
+  function setupTab(activePage){
+    $('.tabpage').hide();
+    $('#tabpage-' + activePage).show();
+    $('.tab').removeClass('active');
+    $('#' + activePage).addClass('active');
+  }
+  setupTab(activePage);
+  $('.tab').click(function(){
+    var activePage = $(this).data('page');
+    setupTab(activePage);
+    curTab.setValue(activePage);
+  });
+}
+
 function handleToggles(curToggle){
+  if (typeof curToggle === 'undefined') return;
   var myToggle = $("#" + curToggle.value);
   myToggle.addClass('accordion-open');
   myToggle.next().addClass('default');
@@ -232,4 +271,46 @@ function handleToggles(curToggle){
 
 function jq(myid) {
   return "#" + myid.replace( /(:|\.|\[|\]|,|=)/g, "\\$1" );
+}
+
+function setupPages(){
+  var manager = Alteryx.Gui.manager;
+  var to = manager.GetDataItem('curPage').getValue()
+  switchPage(to);
+  $('.switch').on('click', function(){
+    var to = $(this).data('page');
+    switchPage(to)
+  })
+  $("document").ready(function(){
+    $(".tabs").stick_in_parent();
+  })
+}
+
+function switchPage(to){
+  var manager = Alteryx.Gui.manager;
+  var curPage = manager.GetDataItem('curPage');
+  var curTab = manager.GetDataItem('curTab');
+  var curToggle = manager.GetDataItem('curToggle');
+  curPage.setValue(to);
+  if (to === "Customize") {
+    $('#page-basic').hide();
+    $('#page-customize').show();
+    handleTabs(curTab);
+    handleToggles(curToggle);
+  } else {
+    $('#page-customize').hide();
+    $('#page-basic').show();
+    window.dispatchEvent(new Event('resize'));
+  }
+}
+
+function initializeDataItemsBeforeLoad(dataItem, items){
+  initializeDataItems(dataItem, items.itemsToInitialize);
+  initializeRadioItems(dataItem, items.radioItems);
+  initializeToggleBarItems(dataItem, items.toggleBarItems);
+}
+
+function syncDataItemsAfterLoad(items){
+  Object.keys(items.radioItems).forEach(syncRadio);
+  Object.keys(items.toggleBarItems).forEach(setupToggleBar);
 }
