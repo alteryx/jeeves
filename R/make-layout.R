@@ -169,7 +169,9 @@ jvMakeDataItemsToInitialize <- function(pluginDir = ".", curPage,
 
 #' @export
 makeHtmlId <- function(x){
-  tolower(gsub(".", "-", make.names(x), fixed = TRUE))
+  x <- gsub(".", "-", make.names(x), fixed = TRUE)
+  x <- gsub("_", "-", x, fixed = TRUE)
+  tolower(x)
 }
 
 #' @export
@@ -177,5 +179,5 @@ makeJsVariable <- function(x, name){
   d <- sprintf('
 var %s = %s
 ', name, HTML(x))
-  tags$script(d)
+  return(d)
 }
