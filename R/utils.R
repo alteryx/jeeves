@@ -78,19 +78,19 @@ aTemplate = function(template){
 
 
 # Dump and quit on error
-dumpAndQuit <- function() {
-  wd = getOption('alteryx.wd')
-  # Save debugging info to file last.dump.rda
-  f <- file.path(wd, 'last.dump.rda')
-  AlteryxRDataX::AlteryxMessage(paste0('Saving dump to ', f))
-  AlteryxRDataX::AlteryxMessage("You can debug the R code by loading the rda file and
-    running load('last.dump.rda');debugger();
-  ")
-  dump.frames(to.file = TRUE)
-  file.copy('last.dump.rda', f, overwrite = TRUE)
-  # Quit R with error status
-  q(status = 1)
-}
+# dumpAndQuit <- function() {
+#   wd = getOption('alteryx.wd')
+#   # Save debugging info to file last.dump.rda
+#   f <- file.path(wd, 'last.dump.rda')
+#   AlteryxRDataX::AlteryxMessage(paste0('Saving dump to ', f))
+#   AlteryxRDataX::AlteryxMessage("You can debug the R code by loading the rda file and
+#     running load('last.dump.rda');debugger();
+#   ")
+#   dump.frames(to.file = TRUE)
+#   file.copy('last.dump.rda', f, overwrite = TRUE)
+#   # Quit R with error status
+#   q(status = 1)
+# }
 
 listMacros <- function(repo = 'install'){
   paths = c(

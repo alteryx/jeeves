@@ -1,6 +1,6 @@
 Package: jeeves
 Type: Package
-Title: A helper for developing predictive tools in Alteryx.
+Title: A helper for developing predictive tools in Alteryx
 Version: 0.6.2
 Date: 2015-09-09
 Authors@R: c(
@@ -19,7 +19,6 @@ Imports:
     jsonlite,
     xml2
 Suggests:
-  AlteryxRDataX,
   miniCRAN,
   base64enc,
   plyr,
