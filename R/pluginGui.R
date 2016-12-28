@@ -171,7 +171,7 @@ renderToggleBar <- function(d){
 
 # Alteryx Plugin Widget
 ayxPluginWidget = function(x){
-  if (x$type == 'ToggleBar'){
+  if (!is.null(x$type) && x$type == 'ToggleBar'){
     return(renderToggleBar(x))
   }
   if (!is.null(x$values)){
@@ -193,13 +193,13 @@ ayxPluginWidget = function(x){
     x$default <- NULL
   }
   label <- x$label
-  if (x$type != 'NumericSlider') {
+  if (!is.null(x$type) && x$type != 'NumericSlider') {
     x$label <- NULL
   } else {
     x$initialValue <- x$default
     x$default <- NULL
   }
-  if (x$type == 'CheckBox'){
+  if (!is.null(x$type) && x$type == 'CheckBox'){
     x$defaultValue <- x$default
     x$default <- NULL
   }
