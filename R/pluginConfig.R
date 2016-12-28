@@ -133,13 +133,17 @@ getIO <- function(template){
   } else {
     ""
   }
-  list(
+  d <- list(
     inputs = getMacroIO('MacroInput'),
     outputs = getMacroIO('MacroOutput'),
     pluginName = tools::file_path_sans_ext(basename(template)),
     properties = getProperties(r),
     helpLink = paste0(sub("AlteryxHelp:", "", helpLink), ".htm")
   )
+  if (length(d$inputs) == 0){
+    d$inputs <- getMacroIO('LockInMacroInput')
+  }
+  return(d)
 }
 
 # Make plugin configuration xml file from macro
