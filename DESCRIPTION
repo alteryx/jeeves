@@ -1,7 +1,7 @@
 Package: jeeves
 Type: Package
 Title: A helper for developing predictive tools in Alteryx
-Version: 0.6.3
+Version: 0.6.5
 Date: 2015-09-09
 Authors@R: c(
     person("Ramnath", "Vaidyanathan", role = c("aut", "cre"), email = "ramnath@alteryx.com"),
