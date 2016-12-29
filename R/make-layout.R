@@ -41,6 +41,8 @@ jvTabPage <- function(title, ..., id = makeHtmlId(title)){
 #' @export
 jvTabbedContent <- function(..., selected = NULL, .list = NULL){
   tabContent <- c(list(...), .list)
+  tabIds <- lapply(tabContent, function(tp){tp$attribs$`data-id`})
+  if (is.null(selected)) selected <- tabIds[1]
   tabNav <- lapply(tabContent, function(tp){
     jvTabNavItem(
       tp$attribs$`data-title`, 
