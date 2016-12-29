@@ -20,21 +20,20 @@ updatePackageFromGithub <- function(name, svnDir = getOption('alteryx.svndir')){
     stop("Invalid SVN directory specified.")
   }
   ayxPackagesDir <- file.path(svnDir, 'Alteryx', 'Plugins', 'AlteryxRPackage')
-  if (dir.exists(file.path(ayxPackagesDir, name))){
-    stop("Please delete the existing package on SVN before proceeding.")
-  } else {
-    dlPath <- sprintf("http://github.com/alteryx/%s/archive/master.zip", name)
-    tempDir <- tempdir()
-    tf <- file.path(tempDir, paste0(name, '.zip'))
-    message("Download ", dlPath, ' to ', tf)
-    downloader::download(dlPath, tf)
-    unzip(tf, exdir = ayxPackagesDir)
-    file.rename(
-      file.path(ayxPackagesDir, paste0(name, '-master')), 
-      file.path(ayxPackagesDir, name)
-    )
-    return(file.path(ayxPackagesDir, name))
+  dlPath <- sprintf("http://github.com/alteryx/%s/archive/master.zip", name)
+  tempDir <- tempdir()
+  tf <- file.path(tempDir, paste0(name, '.zip'))
+  message("Download ", dlPath, ' to ', tf)
+  downloader::download(dlPath, tf)
+  unzip(tf, exdir = tempDir)
+  udir <- file.path(tempDir, sprintf('%s-master', name))
+  toDir <- file.path(ayxPackagesDir, name)
+  if (!dir.exists(toDir)){
+    dir.create(toDir, recursive = TRUE)
   }
+  message('Copying package files')
+  file.copy(list.files(udir, full.names = TRUE), toDir, recursive = TRUE)
+  return(file.path(ayxPackagesDir, name))
 }
 
 #' @rdname updatePackageFromGithub
