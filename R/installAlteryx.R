@@ -82,10 +82,6 @@ runFromWindows <- function(){
   }
 }
 
-
-
-"2016-12-23 15:43:36"
-
 # List all installed packages
 listInstalledPackages <- function(
     svnDir = getOption('alteryx.svndir'),
