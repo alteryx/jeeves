@@ -61,7 +61,7 @@ saveManifest <- function(
     row.names = F
   )
   message("Updating package readme on SVN...")
-  saveReadme()
+  saveReadme(rVersion = rVersion)
 }
 
 #' Save readme
