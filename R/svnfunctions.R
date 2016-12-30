@@ -48,7 +48,7 @@ installToSvn <- function(srcPkg, to_install = TRUE, rVersion = '3.2.3'){
 #' @export
 saveManifest <- function(
     svnDir = getOption("alteryx.svndir"),
-    rVersion = '3.2.3'){
+    rVersion = '3.3.2'){
   rdirs <- getAyxSvnRDirs(rVersion = rVersion)
   svnLibDir = rdirs$lib
   d3 <- summary(packageStatus(svnLibDir))
@@ -68,7 +68,7 @@ saveManifest <- function(
 #' 
 #' @param save whether or not to save the readme
 #' @export
-saveReadme <- function(save = TRUE, rVersion = '3.2.3'){
+saveReadme <- function(save = TRUE, rVersion = '3.3.2'){
   rdirs <- getAyxSvnRDirs(rVersion = rVersion)
   readmeFile = file.path(rdirs$installer, "Readme.txt")
   svnLibDir = rdirs$lib
