@@ -4,7 +4,7 @@
 \alias{saveManifest}
 \title{Save manifest of R packages installed.}
 \usage{
-saveManifest(svnDir = getOption("alteryx.svndir"), rVersion = "3.2.3")
+saveManifest(svnDir = getOption("alteryx.svndir"), rVersion = "3.3.2")
 }
 \arguments{
 \item{string}{indicating version of R}

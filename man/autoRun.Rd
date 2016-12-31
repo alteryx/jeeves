@@ -35,6 +35,6 @@ autoRun(
 autoRun(
   plugins, downloadDir = downloadDir, downloadInstallers = TRUE, 
   installAlteryx = FALSE, rInstaller = 'RREInstaller'
- )
+)
 }
 
