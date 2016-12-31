@@ -26,7 +26,8 @@ Suggests:
   whisker,
   withr,
   devtools,
-  knitr
+  knitr,
+  flightdeck
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr
 URL: https://github.com/alteryx/jeeves
