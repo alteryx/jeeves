@@ -30,6 +30,8 @@ updatePackageFromGithub <- function(name, svnDir = getOption('alteryx.svndir')){
   toDir <- file.path(ayxPackagesDir, name)
   if (!dir.exists(toDir)){
     dir.create(toDir, recursive = TRUE)
+    message('This looks like a new package. So jeeves is adding a build script.')
+    addBuildScript(ayxPackagesDir, name)
   }
   message('Copying package files')
   file.copy(list.files(udir, full.names = TRUE), toDir, recursive = TRUE)
@@ -70,3 +72,27 @@ updatePluginFromGithub <- function(name, svnDir = getOption('alteryx.svndir')){
     }
   })
 }
+
+#' @export
+addBuildScript <- function(ayxPackagesDir, name){
+  batFileContents <- readLines(
+    system.file('templates', 'pkg-build-batchfile.bat', package = 'jeeves')
+  )
+  batFile <- file.path(ayxPackagesDir, paste0('Build', name, '.bat'))
+  batFileContents <- gsub('__PKG__', name, batFileContents)
+  writeLines(batFileContents, batFile)
+}
+
+#' @export
+getNewDependencies <- function(pkg){
+  options(repos =  c(
+    CRAN = 'http://cran.rstudio.org', 
+    Alteryx = 'http://alteryx.github.io/drat'
+  ))
+  ayxRDirs <- getAyxSvnRDirs()
+  pkgLibDir <- ayxRDirs$lib
+  readme <- readLines(file.path(ayxRDirs$installer, 'Readme.txt'), warn = FALSE)
+  deps <- miniCRAN::pkgDep(pkg, suggests = FALSE)
+  depsToInstall <- setdiff(deps, c(pkg, readme))
+}
+
