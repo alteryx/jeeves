@@ -72,14 +72,14 @@ autoRun <- function(plugins, downloadInstallers = FALSE, downloadDir,
   
   d1 <- plyr::ldply(list.files(testDir, full.names = TRUE), function(f){
     results <- readRDS(f)
-    r2 <- ldply(results, function(r){as.data.frame(r[-5])})
+    r2 <- plyr::ldply(results, function(r){as.data.frame(r[-5])})
     r2$status <- ifelse(r2$status == ":smile:", "&#9989;", "&#x274C;")
     tool <- gsub("TestResults", "", tools::file_path_sans_ext(basename(f)))
     r2 <- cbind(tool = tool, r2, 
       timestamp = format(file.mtime(f), '%d-%b-%y %H:%M')
     )
   })
-  d2 <- arrange(d1, desc(status), tool)
+  d2 <- plyr::arrange(d1, plyr::desc(status), tool)
   d2 <- cbind(id = 1:NROW(d2), d2)
   myTests <- DT::datatable(d2,
     rownames = FALSE,
@@ -96,7 +96,18 @@ autoRun <- function(plugins, downloadInstallers = FALSE, downloadDir,
     flightdeck::fdHeader(title = 'Predictive Tests'),
     flightdeck::fdSidebar(),
     flightdeck::fdBody(
-      fdRowBox(myTests, width = 12)
+      flightdeck::fdRowBox(myTests, width = 12)
     )
   )
+}
+
+downloadPluginFromGithub <- function(name, to){
+  dlPath <- sprintf("http://github.com/alteryx/%s/archive/master.zip", name)
+  tf <- file.path(to, paste0(name, '.zip'))
+  message("Downloading ", dlPath, ' to ', tf)
+  downloader::download(dlPath, tf)
+  unzip(tf, exdir = to)
+  udir <- file.path(to, sprintf('%s-master', name))
+  file.rename(udir, gsub("-master", "", udir))
+  return(gsub("-master", "", udir))
 }
