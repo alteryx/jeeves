@@ -37,3 +37,4 @@ RoxygenNote: 5.0.1
 VignetteBuilder: knitr
 URL: https://github.com/alteryx/jeeves
 BugReports: https://github.com/alteryx/jeeves/issues
+Remotes: alteryx/flightdeck
