@@ -17,17 +17,22 @@ Imports:
     yaml,
     htmltools (>= 0.3.5),
     jsonlite,
-    xml2
+    xml2,
+    plyr
 Suggests:
+  drat,
   miniCRAN,
   base64enc,
-  plyr,
   rmarkdown,
   whisker,
   withr,
   devtools,
   knitr,
-  flightdeck
+  flightdeck,
+  DT,
+  downloader,
+  stringr,
+  webshot
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr
 URL: https://github.com/alteryx/jeeves
