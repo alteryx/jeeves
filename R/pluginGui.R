@@ -1,8 +1,8 @@
 #' Write Gui HTML for plugin
 #' 
-#'  @param pluginDir directory containing the plugin.
-#'  @param htmlFile html file to write the Gui to
-#'  @param overrides a list of overrides for widgets 
+#' @param pluginDir directory containing the plugin.
+#' @param htmlFile html file to write the Gui to
+#' @param overrides a list of overrides for widgets 
 #' @export
 writeGuiHtml <- function(pluginDir = '.', htmlFile = NULL, overrides = NULL){
   dirs <- dirNames()
@@ -214,6 +214,12 @@ ayxPluginWidget = function(x){
   )
 }
 
+#' Render plugin widgets
+#' 
+#' @param pluginDir path to plugin directory
+#' @param htmlFile layout file to use
+#' @param overrides overrides if any
+#' @param wrapInDiv boolean indicating if every widget should be wrapped in a div.
 #' @export
 renderPluginWidgets <- function(pluginDir = '.', htmlFile = NULL, 
     overrides = NULL, wrapInDiv = FALSE){

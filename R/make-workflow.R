@@ -24,6 +24,17 @@ config2xml <- function(props, collapse = ","){
   config
 }
 
+#' Make a workflow
+#' 
+#' @param template xml file to use as template for the workflow
+#' @param data data to pass to the template
+#' @param config configuration to use
+#' @param inputs_id inputs_id
+#' @param config_id config_id
+#' @param comment_id comment_id
+#' @param comment comment
+#' @param outFile outFile
+#' @param collapse collapse
 #' @export
 makeWorkflow <- function(template, data, config, inputs_id, config_id, 
     comment_id = NULL, comment = NULL, outFile, collapse = ","){
@@ -48,6 +59,11 @@ makeWorkflow <- function(template, data, config, inputs_id, config_id,
   write_xml(doc, outFile)
 }
 
+#' Make an Alteryx workflow
+#' 
+#' 
+#' @inheritParams makeWorkflow
+#' @param repl replacement to provide
 #' @export
 makeWorkflow2 <- function(template, repl, outFile, collapse = ","){
   getTool <- function(id){

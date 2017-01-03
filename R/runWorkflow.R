@@ -17,6 +17,9 @@ runWorkflow = function(file){
   return(out)
 }
 
+#' Run an Alteryx workflow
+#' 
+#' @param file parameter to pass on to \code{AlteryxEngineCmd}
 #' @export
 runWorkflow2 <- function(file){
   message("Running ", file)

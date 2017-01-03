@@ -125,7 +125,7 @@ copyPredictiveAndHelperMacros <- function(macro, pluginDir = '.', rVersion){
   copyPredictiveMacro(macro, to = to, overwrite = TRUE)
   iconFile <- file.path(
     pluginDir,
-    sprintf("%sIcon.png", tools:::file_path_sans_ext(basename(macro)))
+    sprintf("%sIcon.png", tools::file_path_sans_ext(basename(macro)))
   )
   p <- getPathToPredictiveMacros(rVersion = rVersion)
   pred_tools_path = normalizePath(p)

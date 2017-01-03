@@ -28,6 +28,11 @@ runTests <- function(pluginDir = ".", build_doc = TRUE){
   })
 }
 
+#' Run tests
+#' 
+#' @param pluginDir path to the plugin directory
+#' @param build_doc boolean indicating if docs should be built
+#' @param testDir name of the tests directory to save results to
 #' @export
 runTests2 <- function(pluginDir = ".", build_doc = FALSE, testDir = 'Tests'){
   testFiles <- getTests(pluginDir, testDir)
@@ -51,7 +56,7 @@ getTests <- function(pluginDir = ".", testDir = 'Tests'){
   if (!dir.exists(test_dir)){
     test_dir <- file.path(pluginDir, 'Supporting_Macros', 'tests')
   }
-  f <- list.files(test_dir, pattern = '.yxmd', full = TRUE)
+  f <- list.files(test_dir, pattern = '.yxmd', full.names = TRUE)
   if (!getOption('ayxhelper.xdf', FALSE) && length(grep("XDF", f) > 0)){
     message("Ignoring XDF related tests.")
     f <- f[-grep("XDF", f)]

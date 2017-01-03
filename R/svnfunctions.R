@@ -2,9 +2,10 @@
 #' 
 #' 
 #' @param srcPkg path to source package
-#' @param install whether or not to actually install dependencies
+#' @param to_install whether or not to actually install dependencies
+#' @param rVersion version of R
 #' @export
-installToSvn <- function(srcPkg, to_install = TRUE, rVersion = '3.2.3'){
+installToSvn <- function(srcPkg, to_install = TRUE, rVersion = getRversion()){
   srcPkg <- normalizePath(srcPkg)
   rdirs <- getAyxSvnRDirs(rVersion = rVersion)
   svnLibDir <- rdirs$lib
@@ -44,11 +45,12 @@ installToSvn <- function(srcPkg, to_install = TRUE, rVersion = '3.2.3'){
 #' that both the manifest and the Readme are built based on packages installed
 #' in the R library in the SVN directory and hence should not be manipulated
 #' manually.
-#' @param string indicating version of R
+#' @param svnDir  string indicating path to svn directory
+#' @param rVersion string indicating version of R
 #' @export
 saveManifest <- function(
     svnDir = getOption("alteryx.svndir"),
-    rVersion = '3.3.2'){
+    rVersion = getRversion()){
   rdirs <- getAyxSvnRDirs(rVersion = rVersion)
   svnLibDir = rdirs$lib
   d3 <- summary(packageStatus(svnLibDir))
@@ -67,8 +69,9 @@ saveManifest <- function(
 #' Save readme
 #' 
 #' @param save whether or not to save the readme
+#' @param rVersion version of R
 #' @export
-saveReadme <- function(save = TRUE, rVersion = '3.3.2'){
+saveReadme <- function(save = TRUE, rVersion = getRversion()){
   rdirs <- getAyxSvnRDirs(rVersion = rVersion)
   readmeFile = file.path(rdirs$installer, "Readme.txt")
   svnLibDir = rdirs$lib
@@ -112,7 +115,6 @@ getAyxSvnPath <- function(to, svnDir = getOption("alteryx.svndir")){
   unname(paths[to])
 }
 
-#' @export
 copyHtmlPluginToSvn <- function(pluginDir = "."){
   copyHtmlPlugin(ayxDir = getAyxSvnDirs())
 }
@@ -139,10 +141,15 @@ getAyxSvnRDirs <- function(svnDir = getOption("alteryx.svndir"), rVersion = NULL
   )
 }
 
+#' Install packages to SVN
+#' 
+#' @param pkg package to install
+#' @param svnDir path to svn directory
+#' @param rVersion version of R
 #' @export
 svnInstallPackages <- function(pkg,
     svnDir = getOption("alteryx.svndir"), 
-    rVersion = paste(R.version$major, R.version$minor, sep = '.')){
+    rVersion = getRversion()){
   rPath <- getAyxSvnRDirs(svnDir, rVersion)
   withr::with_libpaths(rPath$lib, {
     install.packages(pkg, lib = rPath$lib)

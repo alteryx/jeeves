@@ -25,10 +25,12 @@ insertRcode <- function(template, rfile, outFile = template,
 }
 
 #' Syntactic sugar for insertRcode to cover the most common usage pattern.
+#' 
+#' @param pluginDir directory containing a html plugin.
 #' @export
 insertRcode2 <- function(pluginDir = "."){
   name = tools::file_path_sans_ext(dir(pattern = '.Rproj'))
-  rFiles = list.files('Supporting_Macros', pattern = '\\.R$')
+  rFiles = list.files('Supporting_Macros', pattern = '\\[1-3].R$')
   for (rFile in rFiles){
     insertRcode(
       sprintf("Supporting_Macros/%s.yxmc", name),

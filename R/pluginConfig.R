@@ -34,17 +34,19 @@ yxmc2PluginConfig <- function(yxmc, saveToFile = NULL){
 #' @param properties properties
 #' @param helpLink help link
 #' @examples 
-#' x = list(
-#'   inputs = list(
-#'     list(Name = 'Input A', Abbrev = "A"),
-#'     list(Name = 'Input B', Abbrev = "B")
-#'   ),
-#'   outputs = list(
-#'     list(Name = 'Output C', Abbrev = "C")
-#'   ),
-#'   pluginName = 'Foo'
-#' )
-#' do.call(makePluginConfig, x)
+#' \dontrun{
+#'   x = list(
+#'     inputs = list(
+#'       list(Name = 'Input A', Abbrev = "A"),
+#'       list(Name = 'Input B', Abbrev = "B")
+#'     ),
+#'     outputs = list(
+#'       list(Name = 'Output C', Abbrev = "C")
+#'     ),
+#'     pluginName = 'Foo'
+#'   )
+#'   do.call(makePluginConfig, x)
+#' }
 #' @keywords internal
 makePluginConfig <- function(inputs, outputs, pluginName, properties = NULL, 
     helpLink = ""){

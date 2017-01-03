@@ -82,9 +82,10 @@ scaffoldPlugin <- function(pluginName, ...){
 #'
 #' @export
 #' @param macro name of the predictive macro
+#' @param rVersion version of R
 #' @param ... additional arguments to pass on to createPluginFromMacro
 #' @family scaffold
-scaffoldPluginFromMacro <- function(macro, rVersion = '3.3.2', ...){
+scaffoldPluginFromMacro <- function(macro, rVersion = getRversion(), ...){
   dirs <- dirNames()
   pluginDir <- basename(macro)
   scaffoldPlugin(pluginDir)

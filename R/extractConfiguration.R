@@ -2,7 +2,7 @@
 #' 
 #' 
 #' @param yxmc path to yxmc file to extract configuration from.
-#' @param asYAML boolean indicating whether output should be converted to yaml.
+#' @param asYaml boolean indicating whether output should be converted to yaml.
 #' @export
 #' @examples
 #' yxmc <- system.file("templates", "sample1.yxmc", package = 'jeeves')
@@ -20,6 +20,7 @@ extractConfiguration <- function(yxmc, asYaml = F){
 
 #' @inheritParams extractConfiguration
 #' @export
+#' @rdname extractConfiguration
 yxmc2yaml <- function(yxmc, asYaml = F){
   .Deprecated('extractConfiguration')
   extractConfiguration(yxmc, asYaml)

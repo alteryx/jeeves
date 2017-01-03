@@ -13,8 +13,10 @@
 #' }
 #' @examples 
 #' # Set path to your SVN directory using options(alteryx.svndir = <path>)
-#' updatePackageFromGithub('AlteryxPredictive')
-#' updatePluginFromSvn('Linear_Regression')
+#' \dontrun{
+#'   updatePackageFromGithub('AlteryxPredictive')
+#'   updatePluginFromSvn('Linear_Regression')
+#' }
 updatePackageFromGithub <- function(name, svnDir = getOption('alteryx.svndir')){
   if (is.null(svnDir) || !dir.exists(svnDir)){
     stop("Invalid SVN directory specified.")
@@ -73,7 +75,6 @@ updatePluginFromGithub <- function(name, svnDir = getOption('alteryx.svndir')){
   })
 }
 
-#' @export
 addBuildScript <- function(ayxPackagesDir, name){
   batFileContents <- readLines(
     system.file('templates', 'pkg-build-batchfile.bat', package = 'jeeves')
@@ -83,6 +84,9 @@ addBuildScript <- function(ayxPackagesDir, name){
   writeLines(batFileContents, batFile)
 }
 
+#' Get new dependencies for a package
+#' 
+#' @param pkg package to get new dependencies for
 #' @export
 getNewDependencies <- function(pkg){
   options(repos =  c(

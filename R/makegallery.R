@@ -11,6 +11,7 @@ takeShot = function(x){
     message('Thumbnail for ', x, ' is up to date')
   }
 }
+
 makeThumbNail = function(x){
   tags$div(class = 'col-md-4', 
     tags$a(href = x, class = 'thumbnail',
@@ -23,6 +24,9 @@ makeThumbNail = function(x){
   )
 }
 
+#' Create a gallery
+#' 
+#' @param files list of html files to create gallery from
 #' @export
 makeGallery = function(files){
   tags$div(class = 'row',

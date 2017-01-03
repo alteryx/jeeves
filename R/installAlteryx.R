@@ -7,6 +7,8 @@
 #' @param branch string indicating the branch. defaults to Predictive_Dev.
 #' @param type string indicating installer type. it should be one of 'Server',
 #'   'Gallery', NonAdmin' or ''.
+#' @param rInstaller string indicating R installer to download. it should be one
+#'   of 'RInstaller' or 'RREInstaller'.
 #' @export
 downloadInstallers <- function(buildRepo = "\\\\DEN-IT-FILE-07\\BuildRepo", 
    to = ".", buildDir = NULL, branch = "Predictive_Dev", type = 'Server',
@@ -15,7 +17,7 @@ downloadInstallers <- function(buildRepo = "\\\\DEN-IT-FILE-07\\BuildRepo",
   to <- normalizePath(to)
   if (is.null(buildDir)){
     message("No buildDir specified. So defaulting to latest.")
-    builds <-  dir(buildRepo, pattern = branch, full = TRUE)
+    builds <-  dir(buildRepo, pattern = branch, full.names = TRUE)
     buildDir <- tail(builds, 1)
   }
   message("Build Directory is ", buildDir)
@@ -132,6 +134,7 @@ writeRPluginIni <- function(revo = FALSE, replace = FALSE){
 
 #' Install all needed packages that are missing
 #'
+#' @param dev boolean indicating if dev versions of packages should be installed.
 #' @export
 installAllPackages <- function(dev = TRUE){
   runFromWindows()
@@ -152,15 +155,19 @@ installAllPackages <- function(dev = TRUE){
    "AlteryxPrescriptive", "AlteryxRDataX",  "AlteryxRviz")
   ayxPackages <- file.path(getOption('dev.dir'), 'dev',
     'AlteryxRPackage', ayxPackages)
-  library(devtools)
+  requireNamespace('devtools')
+  install_ <- devtools::install
   withr::with_libpaths(lib, {
-    lapply(ayxPackages, install)
+    lapply(ayxPackages, install_)
   })
 }
 
 #' Install all packages
 #' 
-#' 
+#' @param branch string indicating svn branch.
+#' @param buildDir build directory.
+#' @param ayxRepo string indicating cran-like repo for alteryx packages
+#' @param buildRepo build repo.
 #' @export
 installAllPackages2 <- function(branch = 'Predictive_Dev', buildDir = NULL,
     ayxRepo = 'https://alteryx.github.io/drat',
@@ -177,7 +184,7 @@ installAllPackages2 <- function(branch = 'Predictive_Dev', buildDir = NULL,
   }
   message("Installing AlteryxRDataX...")
   if (is.null(buildDir)){
-    builds <-  dir(buildRepo, pattern = branch, full = TRUE)
+    builds <-  dir(buildRepo, pattern = branch, full.names = TRUE)
     buildDir <- tail(builds, 1)
   }
   RDataX <- list.files(file.path(buildDir, 'R'), pattern = 'AlteryxRDataX_', 
@@ -208,10 +215,10 @@ updateRInstallation <- function(){
 
 #' Copy XDF files from SVN
 #'
-#' @param svnDir svn directory to copy from
-#' 
+#' @param svnDir svn directory to copy from.
+#' @param rVersion string indicating version of R.
 copyXDFFiles <- function(svnDir = getOption('alteryx.svndir'), 
-    rVersion = '3.2.3'){
+    rVersion = getRversion()){
   xdf_macros <- file.path(svnDir, 'Alteryx', 'Plugins', 'AlteryxRPlugin', 
     'XDF_Macros')
   xdf_samples <- file.path(svnDir, 'Alteryx', 'Plugins', 'AlteryxRPlugin', 

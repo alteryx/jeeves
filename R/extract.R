@@ -74,7 +74,7 @@ extractAnnotationConfig <- function(pluginName){
 
 #' Extract question constants and return code that can be inserted
 #' 
-#' @param path to macro from which to extract question constants
+#' @param macro path to macro from which to extract question constants
 #' @param input variable to assign the question constants to
 #' @export
 #' @family extract
@@ -93,7 +93,8 @@ extractQuestionConstants <- function(macro, input = 'config'){
 #' Extract macro constants. 
 #' 
 #' These values if present should override the defaults set in the macro.
-#' @param yxmc path to yxmc file
+#' @param root xml object containing the root node of a yxmc file.
+#' @param yxmc path to yxmc file.
 #' @export
 #' @family extract
 extractMacroConstants <- function(root, yxmc = NULL){
