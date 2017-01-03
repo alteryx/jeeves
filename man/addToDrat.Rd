@@ -11,8 +11,8 @@ addToDrat(pkg, cleanup = TRUE, ...)
 
 \item{cleanup}{boolean indicating if built files should be cleaned up}
 
-\item{...}{additional parameters to be passed to \code{\link{insertPackage}}
-for binaries}
+\item{...}{additional parameters to be passed to
+\code{\link[drat]{insertPackage}} for binaries}
 }
 \description{
 Add package to drat repo

@@ -4,10 +4,12 @@
 \alias{scaffoldPluginFromMacro}
 \title{Scaffold a plugin based on an existing predictive macro.}
 \usage{
-scaffoldPluginFromMacro(macro, rVersion = "3.3.2", ...)
+scaffoldPluginFromMacro(macro, rVersion = getRversion(), ...)
 }
 \arguments{
 \item{macro}{name of the predictive macro}
+
+\item{rVersion}{version of R}
 
 \item{...}{additional arguments to pass on to createPluginFromMacro}
 }

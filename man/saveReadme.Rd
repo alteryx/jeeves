@@ -4,10 +4,12 @@
 \alias{saveReadme}
 \title{Save readme}
 \usage{
-saveReadme(save = TRUE, rVersion = "3.3.2")
+saveReadme(save = TRUE, rVersion = getRversion())
 }
 \arguments{
 \item{save}{whether or not to save the readme}
+
+\item{rVersion}{version of R}
 }
 \description{
 Save readme

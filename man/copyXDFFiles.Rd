@@ -4,10 +4,12 @@
 \alias{copyXDFFiles}
 \title{Copy XDF files from SVN}
 \usage{
-copyXDFFiles(svnDir = getOption("alteryx.svndir"), rVersion = "3.2.3")
+copyXDFFiles(svnDir = getOption("alteryx.svndir"), rVersion = getRversion())
 }
 \arguments{
-\item{svnDir}{svn directory to copy from}
+\item{svnDir}{svn directory to copy from.}
+
+\item{rVersion}{string indicating version of R.}
 }
 \description{
 Copy XDF files from SVN

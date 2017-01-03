@@ -6,6 +6,13 @@
 \usage{
 writeGuiHtmlFromLayout(pluginDir = ".", htmlFile = NULL, overrides = NULL)
 }
+\arguments{
+\item{pluginDir}{directory containing the plugin.}
+
+\item{htmlFile}{html file to write the Gui to}
+
+\item{overrides}{a list of overrides for widgets}
+}
 \description{
 Write Gui HTML for plugin based on a layout
 }

@@ -19,6 +19,9 @@ downloadInstallers(buildRepo = "\\\\\\\\DEN-IT-FILE-07\\\\BuildRepo",
 
 \item{type}{string indicating installer type. it should be one of 'Server',
 'Gallery', NonAdmin' or ''.}
+
+\item{rInstaller}{string indicating R installer to download. it should be one
+of 'RInstaller' or 'RREInstaller'.}
 }
 \description{
 Downloads installers automatically from the build repository.

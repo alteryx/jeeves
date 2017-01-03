@@ -6,9 +6,14 @@
 \usage{
 writeGuiHtml(pluginDir = ".", htmlFile = NULL, overrides = NULL)
 }
+\arguments{
+\item{pluginDir}{directory containing the plugin.}
+
+\item{htmlFile}{html file to write the Gui to}
+
+\item{overrides}{a list of overrides for widgets}
+}
 \description{
-@param pluginDir directory containing the plugin.
- @param htmlFile html file to write the Gui to
- @param overrides a list of overrides for widgets
+Write Gui HTML for plugin
 }
 

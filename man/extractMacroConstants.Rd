@@ -7,7 +7,9 @@
 extractMacroConstants(root, yxmc = NULL)
 }
 \arguments{
-\item{yxmc}{path to yxmc file}
+\item{root}{xml object containing the root node of a yxmc file.}
+
+\item{yxmc}{path to yxmc file.}
 }
 \description{
 These values if present should override the defaults set in the macro.

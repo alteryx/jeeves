@@ -29,7 +29,9 @@ This function tries to automate the following manual sequence of steps.
 }
 \examples{
 # Set path to your SVN directory using options(alteryx.svndir = <path>)
-updatePackageFromGithub('AlteryxPredictive')
-updatePluginFromSvn('Linear_Regression')
+\dontrun{
+  updatePackageFromGithub('AlteryxPredictive')
+  updatePluginFromSvn('Linear_Regression')
+}
 }
 

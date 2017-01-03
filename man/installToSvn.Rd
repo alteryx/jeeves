@@ -4,12 +4,14 @@
 \alias{installToSvn}
 \title{Install packages to R library in SVN}
 \usage{
-installToSvn(srcPkg, to_install = TRUE, rVersion = "3.2.3")
+installToSvn(srcPkg, to_install = TRUE, rVersion = getRversion())
 }
 \arguments{
 \item{srcPkg}{path to source package}
 
-\item{install}{whether or not to actually install dependencies}
+\item{to_install}{whether or not to actually install dependencies}
+
+\item{rVersion}{version of R}
 }
 \description{
 Install packages to R library in SVN

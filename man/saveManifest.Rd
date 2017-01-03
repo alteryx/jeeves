@@ -4,10 +4,12 @@
 \alias{saveManifest}
 \title{Save manifest of R packages installed.}
 \usage{
-saveManifest(svnDir = getOption("alteryx.svndir"), rVersion = "3.3.2")
+saveManifest(svnDir = getOption("alteryx.svndir"), rVersion = getRversion())
 }
 \arguments{
-\item{string}{indicating version of R}
+\item{svnDir}{string indicating path to svn directory}
+
+\item{rVersion}{string indicating version of R}
 }
 \description{
 A detailed manifest of all R package installed in the SVN directory specified

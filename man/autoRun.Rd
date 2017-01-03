@@ -14,6 +14,8 @@ autoRun(plugins, downloadInstallers = FALSE, downloadDir,
 
 \item{downloadDir}{directory to which installers should be downloaded to}
 
+\item{installAlteryx}{boolean indicating if Alteryx should be installed.}
+
 \item{...}{additional arguments to pass to \code{\link{downloadInstallers}}}
 }
 \description{
@@ -27,14 +29,18 @@ This function runs all samples and tests for plugins.
 }
 \examples{
 # Run tests on OSR
+\dontrun{
 autoRun(
-  plugins, downloadDir = downloadDir, downloadInstallers = TRUE, installAlteryx = TRUE,
+  plugins, downloadDir = downloadDir, 
+  downloadInstallers = TRUE, installAlteryx = TRUE,
   rInstaller = 'RInstaller'
 )
 # Run tests on MRC
-autoRun(
-  plugins, downloadDir = downloadDir, downloadInstallers = TRUE, 
-  installAlteryx = FALSE, rInstaller = 'RREInstaller'
-)
+  downloadDir <- "."
+  autoRun(
+    plugins, downloadDir = downloadDir, downloadInstallers = TRUE, 
+    installAlteryx = FALSE, rInstaller = 'RREInstaller'
+  )
+}
 }
 

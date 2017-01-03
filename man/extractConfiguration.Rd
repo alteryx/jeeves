@@ -2,14 +2,17 @@
 % Please edit documentation in R/extractConfiguration.R
 \name{extractConfiguration}
 \alias{extractConfiguration}
+\alias{yxmc2yaml}
 \title{Extract question constants and their configuration from macro}
 \usage{
 extractConfiguration(yxmc, asYaml = F)
+
+yxmc2yaml(yxmc, asYaml = F)
 }
 \arguments{
 \item{yxmc}{path to yxmc file to extract configuration from.}
 
-\item{asYAML}{boolean indicating whether output should be converted to yaml.}
+\item{asYaml}{boolean indicating whether output should be converted to yaml.}
 }
 \description{
 Extract question constants and their configuration from macro

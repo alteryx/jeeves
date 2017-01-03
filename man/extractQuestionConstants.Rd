@@ -7,9 +7,9 @@
 extractQuestionConstants(macro, input = "config")
 }
 \arguments{
-\item{input}{variable to assign the question constants to}
+\item{macro}{path to macro from which to extract question constants}
 
-\item{path}{to macro from which to extract question constants}
+\item{input}{variable to assign the question constants to}
 }
 \description{
 Extract question constants and return code that can be inserted

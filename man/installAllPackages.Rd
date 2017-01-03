@@ -6,6 +6,9 @@
 \usage{
 installAllPackages(dev = TRUE)
 }
+\arguments{
+\item{dev}{boolean indicating if dev versions of packages should be installed.}
+}
 \description{
 Install all needed packages that are missing
 }

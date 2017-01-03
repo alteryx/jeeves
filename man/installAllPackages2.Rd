@@ -8,6 +8,15 @@ installAllPackages2(branch = "Predictive_Dev", buildDir = NULL,
   ayxRepo = "https://alteryx.github.io/drat",
   buildRepo = "\\\\\\\\DEN-IT-FILE-07\\\\BuildRepo")
 }
+\arguments{
+\item{branch}{string indicating svn branch.}
+
+\item{buildDir}{build directory.}
+
+\item{ayxRepo}{string indicating cran-like repo for alteryx packages}
+
+\item{buildRepo}{build repo.}
+}
 \description{
 Install all packages
 }

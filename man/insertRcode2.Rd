@@ -6,6 +6,9 @@
 \usage{
 insertRcode2(pluginDir = ".")
 }
+\arguments{
+\item{pluginDir}{directory containing a html plugin.}
+}
 \description{
 Syntactic sugar for insertRcode to cover the most common usage pattern.
 }
