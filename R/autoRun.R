@@ -3,20 +3,25 @@
 #' This function runs all samples and tests for plugins.
 #' @param plugins names of plugins to test.
 #' @param downloadInstallers boolean indicating if installers should be downloaded.
+#' @param installAlteryx boolean indicating if Alteryx should be installed.
 #' @param downloadDir directory to which installers should be downloaded to
 #' @param ... additional arguments to pass to \code{\link{downloadInstallers}}
 #' @export
 #' @examples
 #' # Run tests on OSR
+#' \dontrun{
 #' autoRun(
-#'   plugins, downloadDir = downloadDir, downloadInstallers = TRUE, installAlteryx = TRUE,
+#'   plugins, downloadDir = downloadDir, 
+#'   downloadInstallers = TRUE, installAlteryx = TRUE,
 #'   rInstaller = 'RInstaller'
 #' )
 #' # Run tests on MRC
-#' autoRun(
-#'   plugins, downloadDir = downloadDir, downloadInstallers = TRUE, 
-#'   installAlteryx = FALSE, rInstaller = 'RREInstaller'
-#' )
+#'   downloadDir <- "."
+#'   autoRun(
+#'     plugins, downloadDir = downloadDir, downloadInstallers = TRUE, 
+#'     installAlteryx = FALSE, rInstaller = 'RREInstaller'
+#'   )
+#' }
 #' @details 
 #' \itemize{
 #'   \item Dont leave Alteryx open when you run this function.
@@ -79,6 +84,10 @@ autoRun <- function(plugins, downloadInstallers = FALSE, downloadDir,
       timestamp = format(file.mtime(f), '%d-%b-%y %H:%M')
     )
   })
+  # TOFIX
+  # this line causes R CMD CHECK to emit a note
+  # since plyr::arrange uses NSE and status and tool are
+  # seen as global objects.
   d2 <- plyr::arrange(d1, plyr::desc(status), tool)
   d2 <- cbind(id = 1:NROW(d2), d2)
   myTests <- DT::datatable(d2,
