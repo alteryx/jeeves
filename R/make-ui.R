@@ -1,8 +1,18 @@
+#' Make a section
+#' 
+#' @param section section
+#' @param config config
+#' @export
 makeSection <- function(section, config){
   sectionItem <- lapply(section[[1]], makeSubSection, config)
   do.call(jvTabPage, c(sectionItem, list(title = names(section)[1])))
 }
 
+#' Make a subsection
+#' 
+#' @param subsection subsection
+#' @param config config
+#' @param ... additional arguments
 #' @export
 makeSubSection <- function(subsection, config, ...){
   UseMethod('makeSubSection')
@@ -27,7 +37,7 @@ makeSubSection.list <- function(subsection, config, ...){
 #' 
 #' @param pluginDir path to root folder of the plugin.
 #' @param displayRules list of display rules to specify.
-#' @param dataItems arguments to pass to jvMakeDataItemsToInitialize.
+#' @param ... arguments to pass to jvMakeDataItemsToInitialize.
 #' @export
 writeLayoutFromYamlSpec <- function(pluginDir = ".", displayRules = c(), ...){
   cfg <- renderPluginWidgets(pluginDir, wrapInDiv = TRUE)
@@ -60,6 +70,9 @@ writeLayoutFromYamlSpec <- function(pluginDir = ".", displayRules = c(), ...){
   writeLines(as.character(myPage), file.path(pluginDir, 'Extras/Gui/layout.html'))
 }
 
+#' Write layout file from a YAML spec
+#' 
+#' @param pluginDir path to plugin
 #' @export
 writeLayoutFromYamlSpec2 <- function(pluginDir = "."){
   cfg <- renderPluginWidgets(pluginDir, wrapInDiv = TRUE)
