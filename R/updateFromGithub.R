@@ -72,6 +72,12 @@ updatePluginFromGithub <- function(name, svnDir = getOption('alteryx.svndir')){
         recursive = TRUE
       )
     }
+    message('Copying Tests to QA Folder')
+    file.copy(
+      list.files(file.path('.', 'Extras', 'Tests'), full.names = TRUE),
+      file.path(svnDir, 'QA', name),
+      recursive = TRUE
+    )
   })
 }
 
