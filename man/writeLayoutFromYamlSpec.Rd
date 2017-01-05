@@ -11,7 +11,7 @@ writeLayoutFromYamlSpec(pluginDir = ".", displayRules = c(), ...)
 
 \item{displayRules}{list of display rules to specify.}
 
-\item{dataItems}{arguments to pass to jvMakeDataItemsToInitialize.}
+\item{...}{arguments to pass to jvMakeDataItemsToInitialize.}
 }
 \description{
 Write layout from a yaml spec file
