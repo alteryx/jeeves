@@ -24,7 +24,7 @@ makeHtmlPageOfPackages <- function(
     d <- read.dcf(x)
     data.frame(
       Package = d[,'Package'],
-      Title = d[,'Title']
+      Description = d[,'Description']
     )
   })
   ayxPkgs <- arrange(ayxPkgs, Package)
