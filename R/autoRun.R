@@ -37,7 +37,7 @@ autoRun <- function(plugins, downloadInstallers = FALSE, downloadDir,
     message("Downloading latest predictive installer")
     installers <- downloadInstallers(to = downloadDir, ...)
     
-    # Install Designer and Predictive Tools Optionall
+    # Install Designer and Predictive Tools Optionally
     if (installAlteryx){
       message("Installing Alteryx and Predictive Tools")
       installAlteryx(installers)
@@ -77,7 +77,14 @@ autoRun <- function(plugins, downloadInstallers = FALSE, downloadDir,
   
   d1 <- plyr::ldply(list.files(testDir, full.names = TRUE), function(f){
     results <- readRDS(f)
-    r2 <- plyr::ldply(results, function(r){as.data.frame(r[-5])})
+    r2 <- plyr::ldply(results, function(r){as.data.frame(r)})
+    r2$log <- sapply(enc2utf8(as.character(r2$log)), function(x){
+      y <- strsplit(x, "\\n")[[1]]
+      #y <- y[!grepl(low_memory, y)]
+      warnings <- grepl("^Warning", y)
+      y[warnings] <- sprintf("<span class='text-warning'>%s</span>", y[warnings])
+      paste(y, collapse = "<br>")
+    })
     r2$status <- ifelse(r2$status == ":smile:", "&#9989;", "&#x274C;")
     tool <- gsub("TestResults", "", tools::file_path_sans_ext(basename(f)))
     r2 <- cbind(tool = tool, r2, 
