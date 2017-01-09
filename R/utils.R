@@ -249,4 +249,14 @@ getAyxDirs <- function(alteryxDir = getOption('alteryx.path')){
   list(htmlplugin = ayxPluginDir, macro = ayxMacroDir)
 }
 
-
+#' Read and write a macro 
+#' 
+#' @param pluginDir path to plugin directory
+#' @export
+readAndWriteMacro <- function(pluginDir = "."){
+  macro <- file.path(pluginDir, dirNames()$macro,
+    paste0(basename(normalizePath(pluginDir)), '.yxmc')
+  )
+  d <- readLines(macro, warn = FALSE)
+  writeLines(d, macro)
+}
