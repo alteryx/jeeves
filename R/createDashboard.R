@@ -1,7 +1,6 @@
 #' Create a dashboard of test results
 #' 
 #' @param plugins plugins to get test results for
-#' @param rootDir root directory where plugins reside
 #' @export
 createTestDashboard <- function(plugins){
   if (is.null(rootDir)){

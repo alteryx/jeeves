@@ -8,8 +8,6 @@ createTestDashboard(plugins)
 }
 \arguments{
 \item{plugins}{plugins to get test results for}
-
-\item{rootDir}{root directory where plugins reside}
 }
 \description{
 Create a dashboard of test results
