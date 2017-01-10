@@ -1,14 +1,10 @@
 #' Create a dashboard of test results
 #' 
-#' @param plugins plugins to get test results for
+#' @param testDirs directories containing the tests.
 #' @export
-createTestDashboard <- function(plugins){
-  if (is.null(rootDir)){
-    rootDir <- file.path(getOption('dev.dir'), 'dev', 'Predictive_Tools')
-  }
-  plugins <- c('Linear_Regression', 'Logistic_Regression', 'Decision_Tree')
-  d1 <- plyr::ldply(plugins, function(x){
-    f <- file.path(rootDir, x, 'Extras', 'Tests', '_testResults.rds')
+createTestDashboard <- function(testDirs){
+  d1 <- plyr::ldply(testDirs, function(x){
+    f <- file.path(testDirs, '_testResults.rds')
     results <- readRDS(f)
     r2 <- plyr::ldply(results, function(r){as.data.frame(r)})
     r2$log <- sapply(enc2utf8(as.character(r2$log)), function(x){
