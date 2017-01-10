@@ -24,11 +24,11 @@ makeHtmlPageOfPackages <- function(
     d <- read.dcf(x)
     data.frame(
       Package = d[,'Package'],
-      Description = d[,'Description']
+      Title = d[,'Description']
     )
   })
-  ayxPkgs <- arrange(ayxPkgs, Package)
-  pkgPage <- div(
+  ayxPkgs <- plyr::arrange(ayxPkgs, Package)
+  pkgPage <- tags$div(
     tags$h4("Alteryx R Packages"), 
     tags$ul(
       apply(ayxPkgs, 1, function(x){
