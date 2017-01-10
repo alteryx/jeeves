@@ -36,12 +36,15 @@ runTests <- function(pluginDir = ".", build_doc = TRUE){
 #' @export
 runTests2 <- function(pluginDir = ".", build_doc = FALSE, testDir = 'Tests'){
   testFiles <- getTests(pluginDir, testDir)
-  dirs <- dirNames()
-  testDir <- file.path(pluginDir, dirs$extras, testDir)
+  #dirs <- dirNames()
+  #testDir <- file.path(pluginDir, dirs$extras, testDir)
+  testDir <- dirname(testFiles)
   results <- lapply(testFiles, runWorkflow2)
+  with_dir_(testDir, {
+    saveRDS(results, '_testResults.rds')
+  })
   if (build_doc){
     with_dir_(testDir, {
-      saveRDS(results, '_testResults.rds')
       rmarkdown::render('README.Rmd')
       browseURL('README.html')
     })
@@ -55,6 +58,9 @@ getTests <- function(pluginDir = ".", testDir = 'Tests'){
   test_dir <- file.path(pluginDir, dirs$extras, testDir)
   if (!dir.exists(test_dir)){
     test_dir <- file.path(pluginDir, 'Supporting_Macros', 'tests')
+    if (!dir.exists(test_dir)){
+      test_dir <- pluginDir
+    }
   }
   f <- list.files(test_dir, pattern = '.yxmd', full.names = TRUE)
   if (!getOption('ayxhelper.xdf', FALSE) && length(grep("XDF", f) > 0)){
@@ -73,5 +79,16 @@ parseResult <- function(result){
     time = stringr::str_match(r2[1], "^Finished in (.*)")[,2],
     message = ifelse(is.na(r2[2]), "", r2[2]),
     log = paste(result, collapse = '\n')
+  )
+}
+
+#' Get samples directory
+#'
+#' @param rVersion version of R.
+#' @export
+getSamplesDir <- function(rVersion = getRversion()){
+  file.path(
+    getOption('alteryx.path'), paste0("R-", rVersion), 'plugin', 
+      'Samples'
   )
 }
