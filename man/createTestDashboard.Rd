@@ -4,10 +4,10 @@
 \alias{createTestDashboard}
 \title{Create a dashboard of test results}
 \usage{
-createTestDashboard(plugins)
+createTestDashboard(testDirs)
 }
 \arguments{
-\item{plugins}{plugins to get test results for}
+\item{testDirs}{directories containing the tests.}
 }
 \description{
 Create a dashboard of test results
