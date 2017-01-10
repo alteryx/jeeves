@@ -1,7 +1,7 @@
 Package: jeeves
 Type: Package
 Title: A helper for developing predictive tools in Alteryx
-Version: 0.6.7
+Version: 0.6.8
 Date: 2015-09-09
 Authors@R: c(
     person("Ramnath", "Vaidyanathan", role = c("aut", "cre"), email = "ramnath@alteryx.com"),
@@ -18,7 +18,8 @@ Imports:
     htmltools (>= 0.3.5),
     jsonlite,
     xml2,
-    plyr
+    plyr,
+    flightdeck
 Suggests:
   drat,
   miniCRAN,
@@ -28,7 +29,6 @@ Suggests:
   withr,
   devtools,
   knitr,
-  flightdeck,
   DT,
   downloader,
   stringr,
