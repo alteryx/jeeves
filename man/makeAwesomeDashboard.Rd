@@ -4,7 +4,7 @@
 \alias{makeAwesomeDashboard}
 \title{Make awesome test dashboard}
 \usage{
-makeAwesomeDashboard()
+makeAwesomeDashboard(svnDir = getOption("alteryx.svndir"))
 }
 \description{
 Make awesome test dashboard
