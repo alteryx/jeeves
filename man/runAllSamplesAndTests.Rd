@@ -6,6 +6,9 @@
 \usage{
 runAllSamplesAndTests(svnDir = getOption("alteryx.svndir"))
 }
+\arguments{
+\item{svnDir}{path to svn directory}
+}
 \description{
 Run all samples and QA tests.
 }

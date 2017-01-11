@@ -246,7 +246,7 @@ getAllSamplesAndTestDirs <- function(svnDir = getOption('alteryx.svndir')){
 
 #' Run all samples and QA tests.
 #' 
-#' 
+#' @inheritParams makeAwesomeDashboard
 #' @export
 runAllSamplesAndTests <- function(svnDir =  getOption('alteryx.svndir')){
   allDirs <- getAllSamplesAndTestDirs(svnDir)
