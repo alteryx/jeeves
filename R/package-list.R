@@ -7,14 +7,33 @@
 makeHtmlPageOfPackages <- function(
     svnDir = getOption('alteryx.svndir'),
     saveTo = NULL){
+  pkgs <- getAllPackageDetails(svnDir = svnDir)
+  section_ <- function(d, title){
+    tagList(tags$h4(title), tags$ul(apply(d, 1, function(x){
+        tags$li(tags$b(x['Package']), tags$span(paste(": ", x['Title'])))
+    })))
+  }
+  pkgPage <- tags$div(
+    section_(pkgs$Alteryx, "Alteryx R Packages"), 
+    section_(pkgs$CRAN, "CRAN Packages")
+  )
+  if (is.null(saveTo)) {
+    htmltools::browsable(pkgPage)
+  } else {
+    htmltools::save_html(pkgPage, saveTo)
+  }
+}
+
+getAllPackageDetails <- function(svnDir = getOption('alteryx.svndir')){
   rdirs <- getAyxSvnRDirs(svnDir = svnDir)
   pkgs <- installed.packages(lib.loc = rdirs$lib)
   readme <- readLines(file.path(rdirs$installer, 'Readme.txt'), warn = F)
   
   pkgs_for_html <- as.data.frame(pkgs[pkgs[,'Package'] %in% readme,])
   
-  cranPkgs <- as.data.frame(t(sapply(rownames(pkgs_for_html), packageDescription, 
-    lib.loc = rdirs$lib, fields = c('Package', 'Title'), USE.NAMES = FALSE
+  cranPkgs <- as.data.frame(t(sapply(rownames(pkgs_for_html), 
+    packageDescription, lib.loc = rdirs$lib, 
+    fields = c('Package', 'Title', 'Version'), USE.NAMES = FALSE
   )))
   
   svnDir <- getOption('alteryx.svndir')
@@ -24,27 +43,11 @@ makeHtmlPageOfPackages <- function(
     d <- read.dcf(x)
     data.frame(
       Package = d[,'Package'],
-      Title = d[,'Description']
+      Title = d[,'Description'],
+      Version = d[,'Version'],
+      stringsAsFactors = FALSE
     )
   })
   ayxPkgs <- plyr::arrange(ayxPkgs, Package)
-  pkgPage <- tags$div(
-    tags$h4("Alteryx R Packages"), 
-    tags$ul(
-      apply(ayxPkgs, 1, function(x){
-        tags$li(tags$b(x['Package']), tags$span(paste(": ", x['Title'])))
-      })
-    ),
-    h4("CRAN Packages"), 
-    tags$ul(
-      apply(cranPkgs, 1, function(x){
-        tags$li(tags$b(x['Package']), tags$span(paste(": ", x['Title'])))
-      })
-    )
-  )
-  if (is.null(saveTo)) {
-    htmltools::browsable(pkgPage)
-  } else {
-    htmltools::save_html(pkgPage, saveTo)
-  }
+  list(Alteryx = ayxPkgs, CRAN = cranPkgs)
 }
