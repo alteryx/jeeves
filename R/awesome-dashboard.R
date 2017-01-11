@@ -108,17 +108,25 @@ makePages <- function(dirs){
 }
   
 makeSidebar <- function(dirs){
+  icons_ <- toolIcons()
   menuItems <- lapply(dirs, function(d){
     r <- processTestResults(d)
     e <- sum(r$Errors != "")
     w <- sum(r$Warnings != "")
-    fdMenuItem(addBadges(basename(d), w, e),  icon = fdIcon('check'), 
+    icon_ <- icons_[[as.character(r$Category[1])]]
+    fdMenuItem(addBadges(basename(d), w, e),  
+      icon = fdIcon(icon_), 
       pageName = basename(d)
     )
   })
   summaryMenuItem <- fdMenuItem("Summary", icon = fdIcon("th"), 
     pageName = 'summary')
-  do.call(fdSidebarMenu, c(list(summaryMenuItem), menuItems))
+  rpackagesMenuItem <- fdMenuItem("R Packages", icon = fdIcon("credit-card"),
+    pageName = 'rpackages'                                
+  )
+  do.call(fdSidebarMenu, c(
+    list(summaryMenuItem), menuItems, list(rpackagesMenuItem))
+  )
 }
 
 
@@ -145,6 +153,10 @@ makeSummaryPage <- function(allDirs){
       `Warnings` = sum(r$Warnings != "")
     )
   })
+  allTestResults <- plyr::arrange(allTestResults, plyr::desc(Errors))
+  allTestResults$Errors = sapply(allTestResults$Errors, function(x){
+    if (x > 0) sprintf("<span class = 'badge bg-red'>%s</span>", x) else x
+  })
   d2 <- DT::datatable(allTestResults,
     rownames = FALSE,
     extensions = c('Buttons', 'Responsive'),
@@ -166,6 +178,23 @@ makeSummaryPage <- function(allDirs){
   )
 }
 
+makeRPackagePage <- function(){
+  d <- do.call(rbind, unname(getAllPackageDetails()))
+  d2 <- DT::datatable(d,
+    rownames = FALSE,
+    extensions = c('Buttons', 'Responsive'),
+    options = list(iDisplayLength = 15),
+    style = 'bootstrap',
+    width = '100%',
+    height = if (NROW(d) > 10) 550 else NULL,
+    class = c('stripe', 'hover', 'cell-border'),
+    escape = FALSE
+  )
+  fdPage(id = 'rpackages', display = FALSE,
+    fdRowBox(title = 'R Packages', d2, width = 12)       
+  )
+}
+
 
 makeTestDashboard <- function(d){
   requireNamespace('flightdeck')
@@ -178,14 +207,16 @@ makeTestDashboard <- function(d){
   fdBoard(
     fdHeader(title = 'Predictive Tools Tests', about),
     fdSidebar(makeSidebar(d)),
-    do.call(fdBody, c(list(makeSummaryPage(d)), makePages(d)))
+    do.call(fdBody, c(
+      list(makeSummaryPage(d)), makePages(d), list(makeRPackagePage()))
+    )
   )
 }
 
 extractAlteryxVersion <- function(log){
   strsplit(
     strsplit(
-      strsplit(as.character(d1$Log[1]), "<br>")[[1]][1], 
+      strsplit(as.character(log), "<br>")[[1]][1], 
       "<a9>"
     )[[1]][1],
     'Version'
@@ -197,14 +228,38 @@ extractAlteryxVersion <- function(log){
 #' 
 #' @export
 #' @import flightdeck
-makeAwesomeDashboard <- function(){
+makeAwesomeDashboard <- function(svnDir = getOption('alteryx.svndir')){
+  allDirs <- getAllSamplesAndTestDirs(svnDir)
+  makeTestDashboard(allDirs)
+}
+
+getAllSamplesAndTestDirs <- function(svnDir = getOption('alteryx.svndir')){
   sampleDirs <- dir(getSamplesDir(), full.names = TRUE)[1:3]
-  pluginDirs <- file.path(
-    getOption('dev.dir'), 'dev',
-    'Predictive_Tools',
+  pluginDirs <- file.path(svnDir, 'QA',
     c('Linear_Regression', 'Logistic_Regression', 'Decision_Tree')
   )
-  
   allDirs <- c(sampleDirs, pluginDirs)
-  makeTestDashboard(allDirs)
+  return(allDirs)
+}
+
+#' Run all samples and QA tests.
+#' 
+#' 
+#' @export
+runAllSamplesAndTests <- function(svnDir =  getOption('alteryx.svndir')){
+  allDirs <- getAllSamplesAndTestDirs(svnDir)
+  pluginTestResults <- plyr::llply(allDirs, runTests2, 
+    build_doc = FALSE, .progress = 'text'
+  )
+}
+
+toolIcons <- function(){
+  list(
+    Data_Artistry = 'database',
+    Predictive_Analytics = 'line-chart',
+    Prescriptive_Analytics = 'magic',
+    Linear_Regression = 'line-chart',
+    Logistic_Regression = 'flask',
+    Decision_Tree = 'tree'
+  )
 }
