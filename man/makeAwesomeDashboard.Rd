@@ -6,6 +6,9 @@
 \usage{
 makeAwesomeDashboard(svnDir = getOption("alteryx.svndir"))
 }
+\arguments{
+\item{svnDir}{path to svn directory}
+}
 \description{
 Make awesome test dashboard
 }

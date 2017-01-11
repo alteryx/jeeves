@@ -226,6 +226,7 @@ extractAlteryxVersion <- function(log){
 
 #' Make awesome test dashboard
 #' 
+#' @param svnDir path to svn directory
 #' @export
 #' @import flightdeck
 makeAwesomeDashboard <- function(svnDir = getOption('alteryx.svndir')){
@@ -233,6 +234,7 @@ makeAwesomeDashboard <- function(svnDir = getOption('alteryx.svndir')){
   makeTestDashboard(allDirs)
 }
 
+#' @inheritParams makeAwesomeDashboard
 getAllSamplesAndTestDirs <- function(svnDir = getOption('alteryx.svndir')){
   sampleDirs <- dir(getSamplesDir(), full.names = TRUE)[1:3]
   pluginDirs <- file.path(svnDir, 'QA',
