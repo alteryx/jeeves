@@ -84,8 +84,18 @@ processTestResults <- function(d){
 
 makeTestResultsTable <- function(testDir){
   d1 <- processTestResults(testDir)
-  d2 <- plyr::arrange(d1, plyr::desc(Status), Category)
+  d1$Errors <- as.numeric(as.character(d1$Errors))
+  d1$Warnings <- as.numeric(as.character(d1$Warnings))
+  d2 <- plyr::arrange(d1, plyr::desc(Errors), plyr::desc(Warnings), Category)
   d2 <- cbind(id = 1:NROW(d2), d2)
+  d2$Errors <- sapply(d2$Errors, function(x){
+    if (is.na(x)) {return("")}
+    if (x > 0) sprintf("<span class = 'badge bg-red'>%s</span>", x) else x
+  })
+  d2$Warnings <- sapply(d2$Warnings, function(x){
+    if (is.na(x)) {return("")}
+    if (x > 0) sprintf("<span class = 'badge bg-orange'>%s</span>", x) else x
+  })
   myTests <- DT::datatable(d2,
     rownames = FALSE,
     extensions = c('Buttons', 'Responsive'),
