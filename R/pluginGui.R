@@ -206,12 +206,18 @@ ayxPluginWidget = function(x){
   tagList(
     HTML(paste("<!-- ", x$dataName, " -->")),
     if (!(x$type %in% c('CheckBox', 'NumericSlider')) && !is.null(label) && label != "") {
-      tags$label(label, `for` = x$id)
+      makeLabel(label, x$id)
     } else {
       NULL
     },
     tag('alteryx-pluginwidget', x)
   )
+}
+
+makeLabel <- function(label, id){
+  # TODO uncomment this line once localization features are  in the build
+  # label <- sprintf('xCode("%s")', label)
+  tags$label(label, `for` = id)
 }
 
 #' Render plugin widgets
