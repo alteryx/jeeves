@@ -60,18 +60,6 @@ updatePluginFromGithub <- function(name, svnDir = getOption('alteryx.svndir')){
   message("Copying plugin to ", svnDir)
   with_dir_(pluginDir, {
     copyHtmlPlugin(ayxDir = getAyxSvnDirs(svnDir = svnDir))
-    if (dir.exists('assets')){
-      assetDir <- file.path(
-        ayxDir = getAyxSvnDirs(svnDir = svnDir)$htmlplugin, 
-        name, 'assets'
-      )
-      if (!dir.exists(assetDir)) dir.create(assetDir, recursive = TRUE)
-      file.copy(
-        list.files(file.path(".", 'assets'), full.names = T), 
-        assetDir, 
-        recursive = TRUE
-      )
-    }
     message('Copying Tests to QA Folder')
     file.copy(
       list.files(file.path('.', 'Extras', 'Tests'), full.names = TRUE),
