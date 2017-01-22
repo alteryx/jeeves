@@ -62,21 +62,21 @@
 #     input = sub("docx", "md", docx), to = 'html', output = tf, options = c("--section-divs")
 #   )
 #   doc <- read_html(tf)
-#   
+# 
 #   annotation <- doc %>% html_nodes("div.section")
 #   name <- doc %>% html_nodes("h2") %>% html_text()
-#   
+# 
 #   main = annotation[1]
 #   title = main %>% html_node("h2") %>% html_text()
 #   auth_desc = main %>% html_nodes("p") %>% html_text()
-#   
+# 
 #   g4 <- data.frame(
 #     name = as.character(name),
 #     annotation2 = as.character(annotation)
 #   )
-#   
+# 
 #   g5 <- join(g4, d3, by = 'name', type = 'full')
-#   
+# 
 #   g6 <- data.frame(
 #     x = g5$x,
 #     y = g5$y,
@@ -85,7 +85,7 @@
 #     type = g5$type
 #   )
 #   list(
-#     #data = g6[-c(1:4),], 
+#     #data = g6[-c(1:4),],
 #     data = g6[-1,],
 #     description = auth_desc[2],
 #     author = auth_desc[1],
@@ -96,7 +96,7 @@
 #   )
 # }
 # 
-# renderStarterKit <- function(kit, workflow = './img/workflow.png', 
+# renderStarterKit <- function(kit, workflow = './img/workflow.png',
 #     header = './img/header.png', assetDir = NULL){
 #   tf <- "__temp__.html"; on.exit(unlink(tf))
 #   if (is.null(assetDir)){
@@ -123,7 +123,7 @@
 #   require(driver)
 #   d <- file_metadata(docx_id)
 #   download_file(
-#     d, 
+#     d,
 #     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 #     '__story__.docx'
 #   )
@@ -143,7 +143,7 @@
 # createScreenshotWorkflow <- function(yxmd, output){
 #   d <- paste(readLines(yxmd, warn = FALSE), collapse = '\n')
 #   d2 <- gsub(
-#     'TextColor name="Black"', 
+#     'TextColor name="Black"',
 #     'TextColor name="White"',
 #     d
 #   )
@@ -154,8 +154,8 @@
 #   )
 #   cat(d2, file = output)
 # }
-# 
-# # Make Tutorial
+# # 
+# # # Make Tutorial
 # makeTutorial <- function(docx, title = "Tutorial", preview = FALSE, standalone = FALSE){
 #   require(rvest)
 #   tf <- tempfile(fileext = '.html')
@@ -163,21 +163,21 @@
 #     input = docx, to = 'html', output = tf, options = c("--section-divs", "--mathml", "--html-q-tags")
 #   )
 #   doc <- read_html(tf)
-#   
+# 
 #   annotation <- doc %>% html_nodes("div.section")
 #   name <- doc %>% html_nodes("h2") %>% html_text()
-#   
+# 
 #   g4 <- data.frame(
 #     step_title = as.character(name[-1]),
 #     step_content = as.character(annotation[-1])
 #   )
-#   
+# 
 #   tutorial <- list(
 #     title = as.character(name[1]),
 #     steps = as.character(annotation[-1]),
 #     steptitles = as.character(name[-1])
 #   )
-#   
+# 
 #   library(whisker)
 #   tplFile <- system.file('starterkit', 'tutorial', 'tpl.html', package = 'jeeves')
 #   tpl <- paste(readLines(tplFile, warn = FALSE), collapse = '\n')
@@ -198,7 +198,7 @@
 #     htmlwidgets:::pandoc_self_contained_html('index.html', 'index_self.html')
 #   }
 # }
-
+# 
 # makeTutorial <- function(docx, preview = FALSE, standalone = FALSE){
 #   require(rvest)
 #   tf <- tempfile(fileext = '.html')
@@ -206,21 +206,21 @@
 #     input = docx, to = 'html', output = tf, options = c("--section-divs", "--mathml")
 #   )
 #   doc <- read_html(tf)
-#   
+# 
 #   annotation <- doc %>% html_nodes("div.section")
 #   name <- doc %>% html_nodes("h2") %>% html_text()
-#   
+# 
 #   g4 <- data.frame(
 #     step_title = as.character(name[-1]),
 #     step_content = as.character(annotation[-1])
 #   )
-#   
+# 
 #   tutorial <- list(
 #     title = as.character(name[1]),
 #     steps = as.character(annotation[-1]),
 #     steptitles = as.character(name[-1])
 #   )
-#   
+# 
 #   library(htmltools)
 #   d = htmlTemplate(
 #     system.file('starterkit', 'tutorial', 'tpl.html', package = 'jeeves'),
