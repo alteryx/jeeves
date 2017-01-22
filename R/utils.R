@@ -223,7 +223,7 @@ toKeyValuePairs <- function(x){
 getPluginFiles <- function(pluginDir = "."){
   dirs <- dirNames()
   pluginName = basename(normalizePath(pluginDir, mustWork = TRUE))
-  files <- list.files(include.dirs = FALSE)
+  files <- list.files(pluginDir, include.dirs = FALSE)
   files <- files[!grepl("^(Extras|Supporting_Macros|App|Gui)", files)]
   files = files[!grepl("^.*\\.Rproj", files)]
   supporting_macro <- file.path(
