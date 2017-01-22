@@ -16,15 +16,6 @@ updatePlugin <- function(pluginDir = ".", ...){
     insertRcode2()
     createPluginFromMacro(pluginDir = ".", ...)
     copyHtmlPlugin()
-    if (dir.exists('assets')){
-      assetDir <- file.path(getAyxDirs()$htmlplugin, pluginName, 'assets')
-      if (!dir.exists(assetDir)) dir.create(assetDir, recursive = TRUE)
-      file.copy(
-        list.files(file.path(".", 'assets'), full.names = T), 
-        assetDir, 
-        recursive = TRUE
-      )
-    }
   })
 }
 
@@ -159,7 +150,16 @@ copyHtmlPlugin <- function(pluginDir = ".", ayxDir = getAyxDirs()){
       file.copy(helper, hdir)
     })
   }
-  
+  if (dir.exists('assets')){
+    message('Copying assets ...')
+    assetDir <- file.path(ayxPluginDir, 'assets')
+    if (!dir.exists(assetDir)) dir.create(assetDir, recursive = TRUE)
+    file.copy(
+      list.files(file.path(pluginDir, 'assets'), full.names = T), 
+      assetDir, 
+      recursive = TRUE
+    )
+  }
 }
 
 #' Create a YXI file
