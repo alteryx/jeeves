@@ -1,7 +1,9 @@
 #' Update SVN with R package or HtmlPlugin from Github
 #' 
 #' @param name name of the package or plugin to update.
+#' @param install boolean indicating if it should install to the alteryx dir.
 #' @param svnDir path to the root of the svn branch directory.
+#' @param ayxDir path to alteryx directory.
 #' @export
 #' @section Update Plugin from Github:
 #' This function tries to automate the following manual sequence of steps.
@@ -17,7 +19,8 @@
 #'   updatePackageFromGithub('AlteryxPredictive')
 #'   updatePluginFromSvn('Linear_Regression')
 #' }
-updatePackageFromGithub <- function(name, svnDir = getOption('alteryx.svndir')){
+updatePackageFromGithub <- function(name, install = FALSE,
+    svnDir = getOption('alteryx.svndir'), ayxDir = getOption('alteryx.path')){
   if (is.null(svnDir) || !dir.exists(svnDir)){
     stop("Invalid SVN directory specified.")
   }
@@ -37,13 +40,24 @@ updatePackageFromGithub <- function(name, svnDir = getOption('alteryx.svndir')){
   }
   message('Copying package files')
   file.copy(list.files(udir, full.names = TRUE), toDir, recursive = TRUE)
+  if (install){
+    requireNamespace('git2r')
+    install_pkg <- devtools::install
+    rLibPath <- file.path(ayxDir, paste0('R-', getRversion()), 'library')
+    message('Installing package ', name, ' to ', rLibPath)
+    withr::with_libpaths(rLibPath, {
+      install_pkg(toDir, lib = rLibPath)
+    })
+  }
   return(file.path(ayxPackagesDir, name))
 }
 
 #' @rdname updatePackageFromGithub
 #' @inheritParams updatePackageFromGithub
 #' @export
-updatePluginFromGithub <- function(name, svnDir = getOption('alteryx.svndir')){
+updatePluginFromGithub <- function(name, svnDir = getOption('alteryx.svndir'),
+     install = FALSE, ayxDir = getOption('alteryx.path')    
+   ){
   if (is.null(svnDir) || !dir.exists(svnDir)){
     stop("Invalid SVN directory specified.")
   }
@@ -66,6 +80,10 @@ updatePluginFromGithub <- function(name, svnDir = getOption('alteryx.svndir')){
       file.path(svnDir, 'QA', name),
       recursive = TRUE
     )
+    if (install){
+      message('Installing plugin ', name, ' to', ayxDir)
+      copyHtmlPlugin(ayxDir = getAyxDirs(ayxDir))
+    }
   })
 }
 
