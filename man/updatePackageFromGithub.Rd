@@ -5,14 +5,20 @@
 \alias{updatePluginFromGithub}
 \title{Update SVN with R package or HtmlPlugin from Github}
 \usage{
-updatePackageFromGithub(name, svnDir = getOption("alteryx.svndir"))
+updatePackageFromGithub(name, install = FALSE,
+  svnDir = getOption("alteryx.svndir"), ayxDir = getOption("alteryx.path"))
 
-updatePluginFromGithub(name, svnDir = getOption("alteryx.svndir"))
+updatePluginFromGithub(name, svnDir = getOption("alteryx.svndir"),
+  install = FALSE, ayxDir = getOption("alteryx.path"))
 }
 \arguments{
 \item{name}{name of the package or plugin to update.}
 
+\item{install}{boolean indicating if it should install to the alteryx dir.}
+
 \item{svnDir}{path to the root of the svn branch directory.}
+
+\item{ayxDir}{path to alteryx directory.}
 }
 \description{
 Update SVN with R package or HtmlPlugin from Github
