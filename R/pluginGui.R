@@ -216,7 +216,7 @@ ayxPluginWidget = function(x){
 
 makeLabel <- function(label, id){
   # TODO uncomment this line once localization features are  in the build
-  # label <- sprintf('xCode("%s")', label)
+  label <- sprintf('XMSG("%s")', label)
   tags$label(label, `for` = id)
 }
 
