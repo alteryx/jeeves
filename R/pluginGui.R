@@ -39,7 +39,8 @@ writeGuiHtml <- function(pluginDir = '.', htmlFile = NULL, overrides = NULL){
   }
   x2 <- makePage(x1)
   x3 <- makeGuiHtml(x2, pluginName = pluginName)
-  cat(as.character(x3), file = htmlFile)
+  # cat(as.character(x3), file = htmlFile)
+  write_html(x3, htmlFile)
 }
 
 #' Write Gui HTML for plugin based on a layout
@@ -82,9 +83,14 @@ writeGuiHtmlFromLayout <- function(pluginDir = '.', htmlFile = NULL,
   }
   x2 <- do.call(htmlTextTemplate, w)
   x3 <- makeGuiHtml(x2, pluginName = pluginName)
-  cat(as.character(x3), file = htmlFile)
+  #cat(as.character(x3), file = htmlFile)
+  write_html(x3, htmlFile)
 }
 
+write_html <- function(x, f){
+  x3 <- gsub("&quot;", "'", as.character(x))
+  cat(x3, file = f)
+}
 
 makeGuiHtml <- function(widgets, pluginName = "", template = NULL){
   if (is.null(template)) {
@@ -177,7 +183,7 @@ ayxPluginWidget = function(x){
   if (!is.null(x$values)){
     values = lapply(seq_along(x$values), function(i){
       list(
-        uiobject = x$values[[i]], 
+        uiobject = localizeText(x$values[[i]]), 
         dataname = names(x$values)[i],
         default = if(!is.null(x$default)) {
           if(names(x$values)[[i]] == x$default) "true" else NULL
@@ -193,6 +199,7 @@ ayxPluginWidget = function(x){
     x$default <- NULL
   }
   label <- x$label
+  if (!is.null(x$label)) x$label <- localizeText(x$label)
   if (!is.null(x$type) && x$type != 'NumericSlider') {
     x$label <- NULL
   } else {
@@ -202,6 +209,9 @@ ayxPluginWidget = function(x){
   if (!is.null(x$type) && x$type == 'CheckBox'){
     x$defaultValue <- x$default
     x$default <- NULL
+  }
+  if ('text' %in% names(x)){
+    x$text <- localizeText(x$text)
   }
   tagList(
     HTML(paste("<!-- ", x$dataName, " -->")),
@@ -218,6 +228,10 @@ makeLabel <- function(label, id){
   # TODO uncomment this line once localization features are  in the build
   label <- sprintf('XMSG("%s")', label)
   tags$label(label, `for` = id)
+}
+
+localizeText <- function(text){
+  sprintf('XMSG("%s")', text)
 }
 
 #' Render plugin widgets
