@@ -88,7 +88,7 @@ writeGuiHtmlFromLayout <- function(pluginDir = '.', htmlFile = NULL,
 }
 
 write_html <- function(x, f){
-  x3 <- gsub("&quot;", "'", as.character(x))
+  x3 <- gsub('&quot;', '"', as.character(x))
   cat(x3, file = f)
 }
 
