@@ -88,7 +88,7 @@ writeLayoutFromYamlSpec2 <- function(pluginDir = "."){
   setupPage <- jvSetupPage(title = names(spec)[1], config[page1])
   page2 <- spec[[2]]
   customizePageContent <- do.call(
-    jvTabbedContent, lapply(spec[[2]], makeSection, cfg)
+    jvTabbedContent, lapply(spec[[2]], makeSection, config)
   )
   
   customizePage <- jvCustomizePage(title = names(spec)[2], customizePageContent)
