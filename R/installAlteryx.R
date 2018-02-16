@@ -84,11 +84,19 @@ runFromWindows <- function(){
   }
 }
 
-# List all installed packages
-listInstalledPackages <- function(
-    svnDir = getOption('alteryx.svndir'),
-    rVersion = NULL                                
-  ){
+#' List of all installed packages used in Alteryx's Predictive tools
+#'
+#' A vector of all added packages in an SVN installation of a version of R.
+#' This is done by reading the Readme.txt file in the /3rdParty/R/Installer
+#' directory. The packages are in a named list identifying those from CRAN
+#' and those from Alteryx
+#'
+#' @param svnDir Path to the local copy of a SVN branch of Alteryx.
+#' @param rVersion The version of R to use as the basis of package installation.
+#'   For a completely new version of R, this will likely be the last version.
+#' @export
+listInstalledPackages <- function(svnDir = getOption('alteryx.svndir'),
+                                  rVersion = NULL) {
   rdirs <- getAyxSvnRDirs(svnDir = svnDir, rVersion = rVersion)
   readmeFile = file.path(rdirs$installer, "Readme.txt")
   pkgs <- readLines(readmeFile, warn = FALSE)
@@ -132,13 +140,17 @@ writeRPluginIni <- function(revo = FALSE, replace = FALSE){
   }
 }
 
-#' Install all needed packages that are missing
+#' Install all needed packages that are missing without building AlteryxRDataX
 #'
-#' @param dev boolean indicating if dev versions of packages should be installed.
+#' @param dev Boolean indicating if dev versions of packages should be installed.
+#' @param rVersion The version of R to use as the basis of package installation.
+#'  This optional argument will typically be used when moving to a new version of
+#'  R, when the natural source of packages were those packages in the current
+#'  version of R used by Alteryx.
 #' @export
-installAllPackages <- function(dev = TRUE){
+installAllPackages <- function(dev = TRUE, rVersion = NULL){
   runFromWindows()
-  cranPkgs <- listInstalledPackages()$cran
+  cranPkgs <- listInstalledPackages(rVersion = rVersion)$cran
   existing_packages <- row.names(installed.packages())
   needed_packages <- cranPkgs[!(cranPkgs %in% existing_packages)]
   if (length(.libPaths()) == 1) {
@@ -162,7 +174,7 @@ installAllPackages <- function(dev = TRUE){
   })
 }
 
-#' Install all packages
+#' Install all packages, including local AlteryxRDataX (source?)
 #' 
 #' @param branch string indicating svn branch.
 #' @param buildDir build directory.
