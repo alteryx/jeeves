@@ -215,6 +215,64 @@ installAllPackages2 <- function(branch = 'Predictive_Dev', buildDir = NULL,
   }
 }
 
+#' Install CRAN Packages needed for Alteryx predictive tools
+#'
+#' The function can be used to install needed CRAN packages for the predictive
+#' tools to either a user's development R installation or the R installation in
+#' the user's local copy of the SVN repository of an Alteryx development
+#' branch. NOTE: To use this function, the R session being used must be running
+#' in administrator mode to allow for appropriate read/write permissions.
+#'
+#' @param currentRVersion The current version of R being used by Alteryx's
+#'  predictive tools.
+#' @param installation One of "dev" or "svn". In the case of "dev", the
+#'  needed CRAN packages are installed into the system library of the user's
+#'  development installation of R. When "svn" is selected, then the packages
+#'  are installed to the system library of the R installation located in the
+#'  user's local copy of the relevant SVN repository. The development R
+#   version and the one in the local copy of the SVN repository must match.
+#'  The respository's path is determined by the alteryx.svndir global options
+#'  setting.
+#' @param repos The CRAN repository to use for package installation. The
+#'  default is https://cloud.r-project.org.
+#' @export
+install_CRAN_pkgs <- function(currentRVersion,
+                              installation = c("dev", "svn"),
+                              repos = "https://cloud.r-project.org") {
+  installation = match.arg(installation)
+  # Bootstrap the process using the packages associated with the current
+  # version of R being used
+  curPkgs_l <- listInstalledPackages(rVersion = currentRVersion)
+  # Get the set of dependencies that match the current packages used. This
+  # is needed to determine any new dependencies
+  allCranDeps_vc <- miniCRAN::pkgDep(curPkgs_l$cran, suggests = FALSE)
+  # The set of dependencies will include recommended packages which will
+  # already be installed, the lines below find these packages and removes
+  # the from the set of packages to install 
+  pkgPriority_vc <- installed.packages()[, "Priority"]
+  pkgPriority_vc[is.na(pkgPriority_vc)] <- "optional"
+  recoPkgs_vc <- names(pkgPriority_vc[pkgPriority_vc == "recommended"])
+  cranPkgs_vc <- allCranDeps_vc[!(allCranDeps_vc %in% recoPkgs_vc)]
+  # Install the packages
+  if (installation == "dev") {
+    cranPkgs_vc <-
+      cranPkgs_vc [!(cranPkgs_vc %in% row.names(installed.packages()))]
+    msg_sc <- paste("Installing",
+                    length(cranPkgs_vc),
+                    "CRAN packages to the development R installation.\n")
+    cat(msg_sc)
+    install.packages(cranPkgs_vc, lib = .libPaths()[1], repos = repos)
+  } else {
+    svnLib_sc <- getAyxSvnRDirs()$lib
+    msg_sc <- paste("Installing",
+                    length(cranPkgs_vc),
+                    "CRAN packages to the local copy of the SVN branch.\n")
+    cat(msg_sc)
+    install.packages(cranPkgs_vc, lib = svnLib_sc, repos = repos)
+  }
+  invisible()
+}
+
 #' Update R installation
 #' 
 #' @export
