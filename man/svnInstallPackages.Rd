@@ -17,4 +17,3 @@ svnInstallPackages(pkg, svnDir = getOption("alteryx.svndir"),
 \description{
 Install packages to SVN
 }
-

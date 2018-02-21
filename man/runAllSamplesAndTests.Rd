@@ -12,4 +12,3 @@ runAllSamplesAndTests(svnDir = getOption("alteryx.svndir"))
 \description{
 Run all samples and QA tests.
 }
-

@@ -21,4 +21,3 @@ the macro.}
 \description{
 Insert R code into an Alteryx macro
 }
-

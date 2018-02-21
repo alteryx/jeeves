@@ -2,14 +2,18 @@
 % Please edit documentation in R/installAlteryx.R
 \name{installAllPackages}
 \alias{installAllPackages}
-\title{Install all needed packages that are missing}
+\title{Install All Needed Packages}
 \usage{
-installAllPackages(dev = TRUE)
+installAllPackages(dev = TRUE, rVersion = NULL)
 }
 \arguments{
-\item{dev}{boolean indicating if dev versions of packages should be installed.}
+\item{dev}{Boolean indicating if dev versions of packages should be installed.}
+
+\item{rVersion}{The version of R to use as the basis of package installation.
+This optional argument will typically be used when moving to a new version of
+R, when the natural source of packages were those packages in the current
+version of R used by Alteryx.}
 }
 \description{
-Install all needed packages that are missing
+Install All Needed Packages
 }
-

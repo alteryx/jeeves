@@ -14,4 +14,3 @@ jvCustomizePage(title, ...)
 \description{
 Create the customize page
 }
-

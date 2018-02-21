@@ -16,4 +16,3 @@ writeGuiHtmlFromLayout(pluginDir = ".", htmlFile = NULL, overrides = NULL)
 \description{
 Write Gui HTML for plugin based on a layout
 }
-

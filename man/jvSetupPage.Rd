@@ -14,4 +14,3 @@ jvSetupPage(title, ...)
 \description{
 Create the setup page
 }
-

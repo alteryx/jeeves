@@ -12,4 +12,3 @@ generateConfigurationTable(yxmcFile)
 \description{
 Generate table of configuration items
 }
-

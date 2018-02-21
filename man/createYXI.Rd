@@ -17,4 +17,3 @@ packaged along with all its dependencies. This function allows a user to
 create a YXI file programatically. The resulting `.yxi` file can be
 distributed standalone.
 }
-

@@ -14,4 +14,3 @@ jvPage(..., id)
 \description{
 Create a page
 }
-

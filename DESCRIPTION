@@ -34,7 +34,7 @@ Suggests:
   downloader,
   stringr,
   webshot
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 VignetteBuilder: knitr
 URL: https://github.com/alteryx/jeeves
 BugReports: https://github.com/alteryx/jeeves/issues

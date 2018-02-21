@@ -17,4 +17,3 @@ Other extract: \code{\link{extractAnnotationInputOutput}},
   \code{\link{extractMacroConstants}},
   \code{\link{extractQuestionConstants}}
 }
-

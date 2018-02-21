@@ -12,4 +12,3 @@ runWorkflows(wdir)
 \description{
 Run Workflows in a directory
 }
-

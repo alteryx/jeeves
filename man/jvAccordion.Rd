@@ -12,4 +12,3 @@ jvAccordion(...)
 \description{
 Create an accordion
 }
-

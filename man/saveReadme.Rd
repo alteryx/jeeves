@@ -14,4 +14,3 @@ saveReadme(save = TRUE, rVersion = getRversion())
 \description{
 Save readme
 }
-

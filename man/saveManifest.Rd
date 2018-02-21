@@ -20,4 +20,3 @@ that both the manifest and the Readme are built based on packages installed
 in the R library in the SVN directory and hence should not be manipulated
 manually.
 }
-

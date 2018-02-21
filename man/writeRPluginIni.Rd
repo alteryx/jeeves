@@ -16,4 +16,3 @@ The \code{RPluginSettings.ini} file enables Alteryx to find the R engine to
 work with. This function allows one to customize the ini file and support
 working with R installs that are not provided by the predictive installer.
 }
-

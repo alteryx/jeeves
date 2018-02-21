@@ -9,4 +9,3 @@ updateRInstallation()
 \description{
 Update R installation
 }
-

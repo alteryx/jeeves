@@ -14,4 +14,3 @@ copyHtmlPlugin(pluginDir = ".", ayxDir = getAyxDirs())
 \description{
 Update Html Plugin
 }
-

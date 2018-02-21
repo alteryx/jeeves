@@ -37,4 +37,3 @@ Helper function to create plugin configuration xml file
 }
 }
 \keyword{internal}
-

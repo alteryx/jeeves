@@ -20,4 +20,3 @@ Scaffold a plugin based on an existing predictive macro.
 Other scaffold: \code{\link{scaffoldPlugin}},
   \code{\link{scaffoldWorkflow}}
 }
-

@@ -19,4 +19,3 @@ renderPluginWidgets(pluginDir = ".", htmlFile = NULL, overrides = NULL,
 \description{
 Render plugin widgets
 }
-

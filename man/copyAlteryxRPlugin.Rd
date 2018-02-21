@@ -14,4 +14,3 @@ copyAlteryxRPlugin(to = NULL, svnDir = getOption("alteryx.svndir"))
 \description{
 Copy predictive macros, samples and plugins from SVN
 }
-

@@ -19,4 +19,3 @@ Other extract: \code{\link{extractAnnotationConfig}},
   \code{\link{extractAnnotationInputOutput}},
   \code{\link{extractQuestionConstants}}
 }
-

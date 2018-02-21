@@ -14,4 +14,3 @@ npmBuild(pluginDir = ".", type = "nwb")
 \description{
 Run build process to update app.min.js and app.css
 }
-

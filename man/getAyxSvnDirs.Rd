@@ -12,4 +12,3 @@ getAyxSvnDirs(svnDir = getOption("alteryx.svndir"))
 \description{
 Get Alteryx SVN Directories
 }
-

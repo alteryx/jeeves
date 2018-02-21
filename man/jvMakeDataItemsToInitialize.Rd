@@ -21,4 +21,3 @@ jvMakeDataItemsToInitialize(pluginDir = ".", curPage, curTab = NULL,
 \description{
 Create data items to initialize
 }
-

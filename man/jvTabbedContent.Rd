@@ -16,4 +16,3 @@ jvTabbedContent(..., selected = NULL, .list = NULL)
 \description{
 Create tabbed content
 }
-

@@ -21,4 +21,3 @@ createPluginFromMacro(pluginDir = ".", overrides = NULL, layout = NULL,
 \description{
 Create Plugin from Macro
 }
-

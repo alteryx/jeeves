@@ -16,4 +16,3 @@ jvTabPage(title, ..., id = makeHtmlId(title))
 \description{
 Create a tab page
 }
-

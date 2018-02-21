@@ -12,4 +12,3 @@ createTestDashboard(testDirs)
 \description{
 Create a dashboard of test results
 }
-

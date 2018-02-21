@@ -14,4 +14,3 @@ runTests(pluginDir = ".", build_doc = TRUE)
 \description{
 Run all tests in the Supporting_Macros/tests folder
 }
-

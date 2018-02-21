@@ -17,4 +17,3 @@ yxmc2PluginConfig(yxmc, saveToFile = NULL)
 \description{
 Make plugin configuration xml file from macro
 }
-

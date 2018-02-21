@@ -26,4 +26,3 @@ of 'RInstaller' or 'RREInstaller'.}
 \description{
 Downloads installers automatically from the build repository.
 }
-

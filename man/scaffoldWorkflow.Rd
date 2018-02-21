@@ -25,4 +25,3 @@ Scaffold a new workflow based on a template
 Other scaffold: \code{\link{scaffoldPluginFromMacro}},
   \code{\link{scaffoldPlugin}}
 }
-
