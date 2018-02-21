@@ -392,8 +392,7 @@ install_Alteryx_pkgs <- function(installation = c("dev", "svn"),
 #'  The respository's path is determined by the alteryx.svndir global options
 #'  setting.
 #' @param readmeManifest A logical flag indicating whether the Readme file
-#'  /3rdParty/Installer/Readme.txt and the manifest file 
-#'  /3rdParty/R/Scripts/packages.csv are saved after installing all the
+#'  and the manifest file are saved after installing all the
 #'  needed package. This is only relevant for installing packages into the SVN
 #'  R installation.
 #' @param dataXPath The local full path to an appropriate binary installer of
@@ -402,8 +401,8 @@ install_Alteryx_pkgs <- function(installation = c("dev", "svn"),
 #' @param repos The CRAN repository to use for package installation. The
 #'  default is https://cloud.r-project.org.
 #' @param useGitHub Install the Alteryx predictive packages other than
-#'  AlteryxRDataX from Alteryx's CRAN like repository on GitHub at
-#'  https://alteryx.github.io/drat. The default is FALSE.
+#'  AlteryxRDataX from Alteryx's CRAN like repository on GitHub.
+#'  The default is FALSE.
 #' @param ayxDepend A character vector of CRAN packages that Alteryx packages
 #'  depend on, but are not a dependency of other CRAN packages. Currently this
 #'  is just the package stringr.
