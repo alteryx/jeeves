@@ -314,7 +314,7 @@ install_CRAN_pkgs <- function(currentRVersion,
 #'  made to install the package.
 #' @param useGitHub Install the Alteryx predictive packages other than
 #'  AlteryxRDataX from Alteryx's CRAN like repository on GitHub at
-#'  \code {https://alteryx.github.io/drat}. The default is FALSE.
+#'  https://alteryx.github.io/drat. The default is FALSE.
 #' @param ayxDepend A character vector of CRAN packages that Alteryx packages
 #'  depend on, but are not a dependency of other CRAN packages. Currently this
 #'  is just the package stringr.
@@ -325,7 +325,7 @@ install_Alteryx_pkgs <- function(installation = c("dev", "svn"),
                                  ayxDepend = "stringr") {
   installation <- match.arg(installation)
   # Stop Mac users from harming themselves
-  jeeves:::runFromWindows()
+  runFromWindows()
   # Address the installation type
   installPlace_sc <- if (installation == "dev") {
                       "local development R installation"
@@ -391,9 +391,9 @@ install_Alteryx_pkgs <- function(installation = c("dev", "svn"),
 #   version and the one in the local copy of the SVN repository must match.
 #'  The respository's path is determined by the alteryx.svndir global options
 #'  setting.
-#' @param readmeManifest A logical flag indicating whether the Readme file --
-#'  \code {/3rdParty/Installer/Readme.txt} and manifest file --
-#'  \code {3rdParty\R\Scripts\packages.csv} are saved after installing all the
+#' @param readmeManifest A logical flag indicating whether the Readme file
+#'  /3rdParty/Installer/Readme.txt and the manifest file 
+#'  /3rdParty/R/Scripts/packages.csv are saved after installing all the
 #'  needed package. This is only relevant for installing packages into the SVN
 #'  R installation.
 #' @param dataXPath The local full path to an appropriate binary installer of
@@ -403,7 +403,7 @@ install_Alteryx_pkgs <- function(installation = c("dev", "svn"),
 #'  default is https://cloud.r-project.org.
 #' @param useGitHub Install the Alteryx predictive packages other than
 #'  AlteryxRDataX from Alteryx's CRAN like repository on GitHub at
-#'  \code {https://alteryx.github.io/drat}. The default is FALSE.
+#'  https://alteryx.github.io/drat. The default is FALSE.
 #' @param ayxDepend A character vector of CRAN packages that Alteryx packages
 #'  depend on, but are not a dependency of other CRAN packages. Currently this
 #'  is just the package stringr.
