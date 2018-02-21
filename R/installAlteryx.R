@@ -140,7 +140,9 @@ writeRPluginIni <- function(revo = FALSE, replace = FALSE){
   }
 }
 
-#' Install all needed packages that are missing without building AlteryxRDataX
+#' Install All Needed Packages
+#'
+
 #'
 #' @param dev Boolean indicating if dev versions of packages should be installed.
 #' @param rVersion The version of R to use as the basis of package installation.
@@ -158,6 +160,7 @@ installAllPackages <- function(dev = TRUE, rVersion = NULL){
   } else {
     lib <- .libPaths()[2]
   }
+  # Install any needed R packages
   if (length(needed_packages) > 0){
     message("Installing packages ")
     message(paste(needed_packages, collapse = "\n"))
@@ -165,6 +168,8 @@ installAllPackages <- function(dev = TRUE, rVersion = NULL){
   }
   ayxPackages <- c("AlteryxSim", "AlteryxPredictive",
    "AlteryxPrescriptive", "AlteryxRDataX",  "AlteryxRviz")
+  # The full paths to the binary packages to be installed. This is based on
+  # installing the packages from a local directory
   ayxPackages <- file.path(getOption('dev.dir'), 'dev',
     'AlteryxRPackage', ayxPackages)
   requireNamespace('devtools')
@@ -174,7 +179,14 @@ installAllPackages <- function(dev = TRUE, rVersion = NULL){
   })
 }
 
-#' Install all packages, including local AlteryxRDataX (source?)
+#' Install All Needed Packages V2
+#'
+#' Alteryx packages, with the exception of AlteryxRDataX, are installed from
+#' the Alteryx drat repo on GitHub, while AlteryxRDataX is installed from
+#' either the binary installer of the package of the most recent nightly
+#' build of the specified branch, or from a local a local directory. The local
+#' directory option would allow for an installation of AlteryxRDataX from
+#' source.
 #' 
 #' @param branch string indicating svn branch.
 #' @param buildDir build directory.
@@ -195,10 +207,12 @@ installAllPackages2 <- function(branch = 'Predictive_Dev', buildDir = NULL,
     lib <- .libPaths()[2]
   }
   message("Installing AlteryxRDataX...")
-  if (is.null(buildDir)){
+  if (is.null(buildDir)) {
+    # Determine the most recent build for the desired branch
     builds <-  dir(buildRepo, pattern = branch, full.names = TRUE)
     buildDir <- tail(builds, 1)
   }
+  # The path to the *binary* installer from the most recent build of the branch
   RDataX <- list.files(file.path(buildDir, 'R'), pattern = 'AlteryxRDataX_', 
     full.names = TRUE)
   install.packages(RDataX, repos = NULL)
@@ -210,6 +224,10 @@ installAllPackages2 <- function(branch = 'Predictive_Dev', buildDir = NULL,
   } else {
     message("Updating R Packages")
     ayxPkgs <- grep("^Alteryx", requiredPkgs, value = TRUE)
+    # The line below may not work as expected, since it does not have a
+    # specified repository, and default repositories have not been specified,
+    # via the use of options(), unless it is assumed the user had already
+    # done this.
     install.packages(ayxPkgs)
     update.packages() 
   }
@@ -239,7 +257,9 @@ installAllPackages2 <- function(branch = 'Predictive_Dev', buildDir = NULL,
 install_CRAN_pkgs <- function(currentRVersion,
                               installation = c("dev", "svn"),
                               repos = "https://cloud.r-project.org") {
-  installation = match.arg(installation)
+  installation <- match.arg(installation)
+  # Stop Mac users from harming themselves
+  runFromWindows()
   # Bootstrap the process using the packages associated with the current
   # version of R being used
   curPkgs_l <- listInstalledPackages(rVersion = currentRVersion)
@@ -256,7 +276,7 @@ install_CRAN_pkgs <- function(currentRVersion,
   # Install the packages
   if (installation == "dev") {
     cranPkgs_vc <-
-      cranPkgs_vc [!(cranPkgs_vc %in% row.names(installed.packages()))]
+      cranPkgs_vc[!(cranPkgs_vc %in% row.names(installed.packages()))]
     msg_sc <- paste("Installing",
                     length(cranPkgs_vc),
                     "CRAN packages to the development R installation.\n")
@@ -270,7 +290,7 @@ install_CRAN_pkgs <- function(currentRVersion,
     cat(msg_sc)
     install.packages(cranPkgs_vc, lib = svnLib_sc, repos = repos)
   }
-  invisible()
+  cranPkgs_vc
 }
 
 #' Update R installation
