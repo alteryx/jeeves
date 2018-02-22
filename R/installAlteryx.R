@@ -427,7 +427,7 @@ install_all_pkgs <- function(currentRVersion,
     allPkgs_vc <- c(installedCranPkgs_vc, installedAyxPkgs_vc)
     allPkgs_vc <- allPkgs[order(allPkgs_vc)]
     readmeFile = file.path(svnR_l$installer, "Readme.txt")
-    writeLines(allPkgs, readmeFile)
+    writeLines(allPkgs_vc, readmeFile)
     # The manifest file
     man1_mc <- summary(packageStatus(svnR_l$lib))
     man2_mc <- man1_mc[, c("Package", "Version", "Status", "Priority", "Built")]
