@@ -100,7 +100,7 @@ listInstalledPackages <- function(svnDir = getOption('alteryx.svndir'),
   rdirs <- getAyxSvnRDirs(svnDir = svnDir, rVersion = rVersion)
   readmeFile = file.path(rdirs$installer, "Readme.txt")
   pkgs <- readLines(readmeFile, warn = FALSE)
-  ayxPkgs <- grep("^Alteryx", pkgs, value = TRUE)
+  ayxPkgs <- c(grep("^Alteryx", pkgs, value = TRUE), "flightdeck")
   list(
     cran = setdiff(pkgs, ayxPkgs),
     alteryx = ayxPkgs
@@ -288,7 +288,8 @@ install_CRAN_pkgs <- function(currentRVersion,
                     length(cranPkgs_vc),
                     "CRAN packages to the local copy of the SVN branch.\n")
     cat(msg_sc)
-    install.packages(cranPkgs_vc, lib = svnLib_sc, repos = repos)
+    withr::with_libpaths(libLoc_sc, {
+      install.packages(cranPkgs_vc, lib = svnLib_sc, repos = repos)})
   }
   cranPkgs_vc
 }
@@ -359,9 +360,10 @@ install_Alteryx_pkgs <- function(installation = c("dev", "svn"),
                  ".")
   message(paste0(msg1))
   if (useGitHub) {
-    install.packages(ayxPackages_vc,
-                     repos = "https://alteryx.github.io/drat",
-                     lib = libLoc_sc)
+    withr::with_libpaths(libLoc_sc, {
+      install.packages(ayxPackages_vc,
+                       repos = "https://alteryx.github.io/drat",
+                       lib = libLoc_sc)})
   } else {
     fullPaths_vc <- paste0(getOption("alteryx.svndir"),
                            "/Alteryx/Plugins/AlteryxRPackage/",
@@ -433,7 +435,7 @@ install_all_pkgs <- function(currentRVersion,
     man2_mc <- man1_mc$inst[, c("Package", "Version", "Status", "Priority", "Built")]
     rownames(man2_mc) <- NULL
     write.csv(man2_mc,
-              file = file.path(rdirs$installer, "../Scripts", "packages.csv"),
+              file = file.path(svnR_l$installer, "../Scripts", "packages.csv"),
               row.names = F)
   }
 }
