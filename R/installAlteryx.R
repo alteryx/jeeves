@@ -425,7 +425,7 @@ install_all_pkgs <- function(currentRVersion,
     svnR_l <- jeeves:::getAyxSvnRDirs()
     # The readme file
     allPkgs_vc <- c(installedCranPkgs_vc, installedAyxPkgs_vc)
-    allPkgs_vc <- allPkgs[order(allPkgs_vc)]
+    allPkgs_vc <- allPkgs_vc[order(allPkgs_vc)]
     readmeFile = file.path(svnR_l$installer, "Readme.txt")
     writeLines(allPkgs_vc, readmeFile)
     # The manifest file
