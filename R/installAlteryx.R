@@ -431,8 +431,10 @@ install_all_pkgs <- function(currentRVersion,
     readmeFile = file.path(svnR_l$installer, "Readme.txt")
     writeLines(allPkgs_vc, readmeFile)
     # The manifest file
-    man1_mc <- summary(packageStatus(lib.loc = svnR_l$lib, repositories = repos))
-    man2_mc <- man1_mc$inst[, c("Package", "Version", "Status", "Priority", "Built")]
+    man1_mc <- summary(packageStatus(lib.loc = svnR_l$lib,
+                       repositories = "https://rweb.crmda.ku.edu/cran/"))
+    man2_mc <-
+      man1_mc$inst[, c("Package", "Version", "Status", "Priority", "Built")]
     rownames(man2_mc) <- NULL
     write.csv(man2_mc,
               file = file.path(svnR_l$installer, "../Scripts", "packages.csv"),
