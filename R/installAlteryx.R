@@ -288,7 +288,7 @@ install_CRAN_pkgs <- function(currentRVersion,
                     length(cranPkgs_vc),
                     "CRAN packages to the local copy of the SVN branch.\n")
     cat(msg_sc)
-    withr::with_libpaths(libLoc_sc, {
+    withr::with_libpaths(svnLib_sc, {
       install.packages(cranPkgs_vc, lib = svnLib_sc, repos = repos)})
   }
   cranPkgs_vc
