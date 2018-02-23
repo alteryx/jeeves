@@ -324,13 +324,12 @@ install_CRAN_pkgs <- function(currentRVersion,
 #'  AlteryxRDataX from Alteryx's CRAN like repository on GitHub at
 #'  https://alteryx.github.io/drat. The default is FALSE.
 #' @param ayxDepend A character vector of CRAN packages that Alteryx packages
-#'  depend on, but are not a dependency of other CRAN packages. Currently this
-#'  is just the package stringr.
+#'  depend on, but are not a dependency of other CRAN packages.
 #' @export
 install_Alteryx_pkgs <- function(installation = c("dev", "svn"),
                                  dataXPath = NULL,
                                  useGitHub = FALSE,
-                                 ayxDepend = "stringr") {
+                                 ayxDepend = NULL) {
   installation <- match.arg(installation)
   # Stop Mac users from harming themselves
   runFromWindows()
