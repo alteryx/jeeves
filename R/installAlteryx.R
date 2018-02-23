@@ -273,23 +273,30 @@ install_CRAN_pkgs <- function(currentRVersion,
   pkgPriority_vc[is.na(pkgPriority_vc)] <- "optional"
   recoPkgs_vc <- names(pkgPriority_vc[pkgPriority_vc == "recommended"])
   cranPkgs_vc <- allCranDeps_vc[!(allCranDeps_vc %in% recoPkgs_vc)]
+  cranPkgs_vc <-
+    cranPkgs_vc[!(cranPkgs_vc %in% row.names(installed.packages()))]
+  # Address the installation type
+  installPlace_sc <- if (installation == "dev") {
+                      "development R installation.\n"
+                    } else {
+                      "copy of the SVN repository.\n"
+                    }
+  libLoc_sc <- if (installation == "dev") {
+                 .libPaths()[1]
+               } else {
+                 getAyxSvnRDirs()$lib
+               }
   # Install the packages
-  if (installation == "dev") {
-    cranPkgs_vc <-
-      cranPkgs_vc[!(cranPkgs_vc %in% row.names(installed.packages()))]
-    msg_sc <- paste("Installing",
-                    length(cranPkgs_vc),
-                    "CRAN packages to the development R installation.\n")
-    cat(msg_sc)
-    install.packages(cranPkgs_vc, lib = .libPaths()[1], repos = repos)
-  } else {
-    svnLib_sc <- getAyxSvnRDirs()$lib
-    msg_sc <- paste("Installing",
-                    length(cranPkgs_vc),
-                    "CRAN packages to the local copy of the SVN branch.\n")
-    cat(msg_sc)
-    withr::with_libpaths(svnLib_sc, {
-      install.packages(cranPkgs_vc, lib = svnLib_sc, repos = repos)})
+  msg_sc <- paste("Installing",
+                  length(cranPkgs_vc),
+                  "CRAN packages to the local",
+                  installPlace_sc)
+  cat(msg_sc)
+  curPkgs_vc <- installed.packages(lib.loc = libLoc_sc)
+  while (!all(cranPkgs_vc %in% curPkgs_vc)) {
+    missPkgs_vc <- cranPkgs_vc[!(cranPkgs_vc %in% curPkgs_vc)]
+    install.packages(missPkgs_vc, lib = libLoc_sc, repos = repos)
+    curPkgs_vc <- installed.packages(lib.loc = libLoc_sc)
   }
   cranPkgs_vc
 }
@@ -329,9 +336,9 @@ install_Alteryx_pkgs <- function(installation = c("dev", "svn"),
   runFromWindows()
   # Address the installation type
   installPlace_sc <- if (installation == "dev") {
-                      "local development R installation"
+                      "to the local development R installation"
                     } else {
-                      "local copy of the SVN repository"
+                      "to the local copy of the SVN repository"
                     }
   libLoc_sc <- if (installation == "dev") {
                  .libPaths()[1]
