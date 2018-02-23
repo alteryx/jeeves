@@ -5,7 +5,7 @@
 \title{Install Alteryx R packages}
 \usage{
 install_Alteryx_pkgs(installation = c("dev", "svn"), dataXPath = NULL,
-  useGitHub = FALSE, ayxDepend = "stringr")
+  useGitHub = FALSE, ayxDepend = NULL)
 }
 \arguments{
 \item{installation}{One of "dev" or "svn". In the case of "dev", the
@@ -25,8 +25,8 @@ AlteryxRDataX from Alteryx's CRAN like repository on GitHub at
 https://alteryx.github.io/drat. The default is FALSE.}
 
 \item{ayxDepend}{A character vector of CRAN packages that Alteryx packages
-depend on, but are not a dependency of other CRAN packages. Currently this
-is just the package stringr.}
+depend on since the last version, but are not a dependency of other CRAN
+packages.}
 }
 \description{
 The function can be used to install Altery's R packages to either a
