@@ -274,8 +274,6 @@ install_CRAN_pkgs <- function(currentRVersion,
   pkgPriority_vc[is.na(pkgPriority_vc)] <- "optional"
   recoPkgs_vc <- names(pkgPriority_vc[pkgPriority_vc == "recommended"])
   cranPkgs_vc <- allCranDeps_vc[!(allCranDeps_vc %in% recoPkgs_vc)]
-  cranPkgs_vc <-
-    cranPkgs_vc[!(cranPkgs_vc %in% row.names(installed.packages()))]
   print(cranPkgs_vc)
   # Address the installation type
   installPlace_sc <- if (installation == "dev") {
@@ -288,6 +286,10 @@ install_CRAN_pkgs <- function(currentRVersion,
                } else {
                  getAyxSvnRDirs()$lib
                }
+  availPkgs_vc <- row.names(installed.packages(lib.loc = libLoc_sc))
+  cranPkgs_vc <-
+    cranPkgs_vc[!(cranPkgs_vc %in% availPkgs_vc)]
+
   # Install the packages
   msg_sc <- paste("Installing",
                   length(cranPkgs_vc),
