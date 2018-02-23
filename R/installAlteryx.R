@@ -289,7 +289,8 @@ install_CRAN_pkgs <- function(currentRVersion,
   availPkgs_vc <- row.names(installed.packages(lib.loc = libLoc_sc))
   cranPkgs_vc <-
     cranPkgs_vc[!(cranPkgs_vc %in% availPkgs_vc)]
-
+  print("Second go, post pruning")
+  print(cranPkgs_vc)
   # Install the packages
   msg_sc <- paste("Installing",
                   length(cranPkgs_vc),
