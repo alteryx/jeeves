@@ -274,7 +274,6 @@ install_CRAN_pkgs <- function(currentRVersion,
   pkgPriority_vc[is.na(pkgPriority_vc)] <- "optional"
   recoPkgs_vc <- names(pkgPriority_vc[pkgPriority_vc == "recommended"])
   cranPkgs_vc <- allCranDeps_vc[!(allCranDeps_vc %in% recoPkgs_vc)]
-  print(cranPkgs_vc)
   # Address the installation type
   installPlace_sc <- if (installation == "dev") {
                       "development R installation.\n"
@@ -289,8 +288,6 @@ install_CRAN_pkgs <- function(currentRVersion,
   availPkgs_vc <- row.names(installed.packages(lib.loc = libLoc_sc))
   cranPkgs_vc <-
     cranPkgs_vc[!(cranPkgs_vc %in% availPkgs_vc)]
-  print("Second go, post pruning")
-  print(cranPkgs_vc)
   # Install the packages
   msg_sc <- paste("Installing",
                   length(cranPkgs_vc),
@@ -298,13 +295,11 @@ install_CRAN_pkgs <- function(currentRVersion,
                   installPlace_sc)
   cat(msg_sc)
   insPkgs_vc <- row.names(installed.packages(lib.loc = libLoc_sc))
-  print(insPkgs_vc)
   while (!all(cranPkgs_vc %in% insPkgs_vc)) {
     missPkgs_vc <- cranPkgs_vc[!(cranPkgs_vc %in% insPkgs_vc)]
     install.packages(missPkgs_vc, lib = libLoc_sc, repos = repos)
     insPkgs_vc <- row.names(installed.packages(lib.loc = libLoc_sc))
   }
-  print(cranPkgs_vc)
   cranPkgs_vc
 }
 
@@ -331,7 +326,8 @@ install_CRAN_pkgs <- function(currentRVersion,
 #'  AlteryxRDataX from Alteryx's CRAN like repository on GitHub at
 #'  https://alteryx.github.io/drat. The default is FALSE.
 #' @param ayxDepend A character vector of CRAN packages that Alteryx packages
-#'  depend on, but are not a dependency of other CRAN packages.
+#'  depend on since the last version, but are not a dependency of other CRAN
+#'  packages.
 #' @export
 install_Alteryx_pkgs <- function(installation = c("dev", "svn"),
                                  dataXPath = NULL,
@@ -419,8 +415,8 @@ install_Alteryx_pkgs <- function(installation = c("dev", "svn"),
 #'  AlteryxRDataX from Alteryx's CRAN like repository on GitHub.
 #'  The default is FALSE.
 #' @param ayxDepend A character vector of CRAN packages that Alteryx packages
-#'  depend on, but are not a dependency of other CRAN packages. Currently this
-#'  is just the package stringr.
+#'  depend on since the last version, but are not a dependency of other CRAN
+#'  packages.
 #' @export
 install_all_pkgs <- function(currentRVersion,
                              installation = c("dev", "svn"),
@@ -428,7 +424,7 @@ install_all_pkgs <- function(currentRVersion,
                              dataXPath = NULL,
                              repos = "https://cloud.r-project.org",
                              useGitHub = FALSE,
-                             ayxDepend = "stringr") {
+                             ayxDepend = NULL) {
   installedCranPkgs_vc <- install_CRAN_pkgs(currentRVersion = currentRVersion,
                                             installation = installation,
                                             repos = repos)
