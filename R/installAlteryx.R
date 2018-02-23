@@ -263,6 +263,7 @@ install_CRAN_pkgs <- function(currentRVersion,
   # Bootstrap the process using the packages associated with the current
   # version of R being used
   curPkgs_l <- listInstalledPackages(rVersion = currentRVersion)
+  print(curPkgs_l)
   # Get the set of dependencies that match the current packages used. This
   # is needed to determine any new dependencies
   allCranDeps_vc <- miniCRAN::pkgDep(curPkgs_l$cran, suggests = FALSE)
@@ -275,6 +276,7 @@ install_CRAN_pkgs <- function(currentRVersion,
   cranPkgs_vc <- allCranDeps_vc[!(allCranDeps_vc %in% recoPkgs_vc)]
   cranPkgs_vc <-
     cranPkgs_vc[!(cranPkgs_vc %in% row.names(installed.packages()))]
+  print(cranPkgs_vc)
   # Address the installation type
   installPlace_sc <- if (installation == "dev") {
                       "development R installation.\n"
@@ -292,12 +294,14 @@ install_CRAN_pkgs <- function(currentRVersion,
                   "CRAN packages to the local",
                   installPlace_sc)
   cat(msg_sc)
-  curPkgs_vc <- installed.packages(lib.loc = libLoc_sc)
+  insPkgs_vc <- installed.packages(lib.loc = libLoc_sc)
+  print(insPkgs_vc)
   while (!all(cranPkgs_vc %in% curPkgs_vc)) {
-    missPkgs_vc <- cranPkgs_vc[!(cranPkgs_vc %in% curPkgs_vc)]
+    missPkgs_vc <- cranPkgs_vc[!(cranPkgs_vc %in% insPkgs_vc)]
     install.packages(missPkgs_vc, lib = libLoc_sc, repos = repos)
-    curPkgs_vc <- installed.packages(lib.loc = libLoc_sc)
+    insPkgs_vc <- installed.packages(lib.loc = libLoc_sc)
   }
+  print(cranPkgs_vc)
   cranPkgs_vc
 }
 
