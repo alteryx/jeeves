@@ -294,12 +294,12 @@ install_CRAN_pkgs <- function(currentRVersion,
                   "CRAN packages to the local",
                   installPlace_sc)
   cat(msg_sc)
-  insPkgs_vc <- installed.packages(lib.loc = libLoc_sc)
+  insPkgs_vc <- row.names(installed.packages(lib.loc = libLoc_sc))
   print(insPkgs_vc)
-  while (!all(cranPkgs_vc %in% curPkgs_vc)) {
+  while (!all(cranPkgs_vc %in% insPkgs_vc)) {
     missPkgs_vc <- cranPkgs_vc[!(cranPkgs_vc %in% insPkgs_vc)]
     install.packages(missPkgs_vc, lib = libLoc_sc, repos = repos)
-    insPkgs_vc <- installed.packages(lib.loc = libLoc_sc)
+    insPkgs_vc <- row.names(installed.packages(lib.loc = libLoc_sc))
   }
   print(cranPkgs_vc)
   cranPkgs_vc
