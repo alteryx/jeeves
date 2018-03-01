@@ -42,5 +42,5 @@ orderLibPaths <- function(x = .libPaths()){
   } else {
     # options(error = dump_and_quit)
   }
-  .libPaths(orderLibPaths())
+  #.libPaths(orderLibPaths())
 }
