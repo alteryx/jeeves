@@ -449,6 +449,14 @@ install_all_pkgs <- function(currentRVersion,
               file = file.path(svnR_l$installer, "../Scripts", "packages.csv"),
               row.names = F)
   }
+  if (installation == "svn") {
+    ayxPackages_vc <- c("AlteryxSim",
+                      "flightdeck",
+                      "AlteryxRviz",
+                      "AlteryxPredictive",
+                      "AlteryxPrescriptive")
+    remove.packages(ayxPackages_vc)
+  }
 }
 
 #' Update R installation
