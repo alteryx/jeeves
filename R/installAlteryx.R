@@ -439,6 +439,10 @@ install_all_pkgs <- function(currentRVersion,
     allPkgs_vc <- allPkgs_vc[order(allPkgs_vc)]
     readmeFile = file.path(svnR_l$installer, "Readme.txt")
     writeLines(allPkgs_vc, readmeFile)
+    mrsFile = file.path(svnR_l$installer, "../MRSInstaller", "Readme.txt")
+    writeLines(allPkgs_vc, mrsFile)
+    revoFile = file.path(svnR_l$installer, "../RevoInstaller", "Readme.txt")
+    writeLines(allPkgs_vc, revoFile)
     # The manifest file
     suppressWarnings(
       man1_mc <- summary(packageStatus(lib.loc = svnR_l$lib,
