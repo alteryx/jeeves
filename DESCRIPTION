@@ -5,7 +5,7 @@ Version: 0.7.0
 Date: 2015-09-09
 Authors@R: c(
     person("Ramnath", "Vaidyanathan", role = c("aut", "cre"), email = "ramnath@alteryx.com"),
-    person("Dan", "Putler", role = "ctb", email = "dputler@alteryx.com")
+    person("Dan", "Putler", role = "ctb", email = "dputler@alteryx.com"),
     person("Alteryx", role = c("cph", "fnd"))
   )
 Maintainer: Dan Putler <dputler@alteryx.com>
