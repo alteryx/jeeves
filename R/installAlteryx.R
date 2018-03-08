@@ -100,6 +100,8 @@ listInstalledPackages <- function(svnDir = getOption('alteryx.svndir'),
   rdirs <- getAyxSvnRDirs(svnDir = svnDir, rVersion = rVersion)
   allPkgs_mc <- installed.packages(lib.loc = rdirs$lib)
   pkgs <- allPkgs_mc[is.na(allPkgs_mc[, "Priority"]), "Package"]
+  # Remove the translations package
+  pkgs <- pkgs[pkgs != "translations"]
   ayxPkgs <- c(grep("^Alteryx", pkgs, value = TRUE), "flightdeck")
   list(
     cran = setdiff(pkgs, ayxPkgs),
