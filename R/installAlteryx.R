@@ -98,8 +98,8 @@ runFromWindows <- function(){
 listInstalledPackages <- function(svnDir = getOption('alteryx.svndir'),
                                   rVersion = NULL) {
   rdirs <- getAyxSvnRDirs(svnDir = svnDir, rVersion = rVersion)
-  readmeFile = file.path(rdirs$installer, "Readme.txt")
-  pkgs <- readLines(readmeFile, warn = FALSE)
+  allPkgs_mc <- installed.packages(lib.loc = rdirs$lib)
+  pkgs <- allPkgs_mc[is.na(allPkgs_mc[, "Priority"]), "Package"]
   ayxPkgs <- c(grep("^Alteryx", pkgs, value = TRUE), "flightdeck")
   list(
     cran = setdiff(pkgs, ayxPkgs),
@@ -433,9 +433,10 @@ install_all_pkgs <- function(currentRVersion,
                                               useGitHub = useGitHub,
                                               ayxDepend = ayxDepend)
   if (readmeManifest && installation == "svn") {
-    svnR_l <- jeeves:::getAyxSvnRDirs()
+    svnR_l <- getAyxSvnRDirs()
     # The readme file
-    allPkgs_vc <- c(installedCranPkgs_vc, installedAyxPkgs_vc)
+    pkgList_l <- listInstalledPackages()
+    allPkgs_vc <- unlist(pkgList_l)
     allPkgs_vc <- allPkgs_vc[order(allPkgs_vc)]
     readmeFile = file.path(svnR_l$installer, "Readme.txt")
     writeLines(allPkgs_vc, readmeFile)
