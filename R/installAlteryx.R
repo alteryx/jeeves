@@ -466,6 +466,9 @@ install_all_pkgs <- function(currentRVersion,
                       "AlteryxRviz",
                       "AlteryxPredictive",
                       "AlteryxPrescriptive")
+    if (!is.null(dataXPath)) {
+      ayxPackages_vc <- c(ayxPackages_vc, "AlteryxRDataX")
+    }
     remove.packages(ayxPackages_vc, lib = svnR_l$lib)
   }
 }
