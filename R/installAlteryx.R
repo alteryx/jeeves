@@ -92,19 +92,31 @@ runFromWindows <- function(){
 #' and those from Alteryx
 #'
 #' @param svnDir Path to the local copy of a SVN branch of Alteryx.
+#' @param type Should the set of packages be based on the packages used in
+#'  the previous predictive installer ("last"), or on the set of packages
+#'  explicitly used by the predictive tools ("min").
 #' @param rVersion The version of R to use as the basis of package installation.
 #'   For a completely new version of R, this will likely be the last version.
 #' @export
 listInstalledPackages <- function(svnDir = getOption('alteryx.svndir'),
+                                  type = c("last", "min"),
                                   rVersion = NULL) {
+  type <- match.arg(type)
   rdirs <- getAyxSvnRDirs(svnDir = svnDir, rVersion = rVersion)
   allPkgs_mc <- installed.packages(lib.loc = rdirs$lib)
   pkgs <- allPkgs_mc[is.na(allPkgs_mc[, "Priority"]), "Package"]
   # Remove the translations package
   pkgs <- pkgs[pkgs != "translations"]
   ayxPkgs <- c(grep("^Alteryx", pkgs, value = TRUE), "flightdeck")
+  loadedLoc_sc <- paste0(svnDir, "/3rdParty/R/loaded_pkgs.txt")
+  cran <- if (type == "last") {
+            cran <- setdiff(pkgs, ayxPkgs)
+          } else {
+            cran <- 
+              as.character(read.csv(file = loadedLoc_sc, header = FALSE)[1])
+          }
   list(
-    cran = setdiff(pkgs, ayxPkgs),
+    cran = cran,
     alteryx = ayxPkgs
   )
 }
@@ -143,8 +155,6 @@ writeRPluginIni <- function(revo = FALSE, replace = FALSE){
 }
 
 #' Install All Needed Packages
-#'
-
 #'
 #' @param dev Boolean indicating if dev versions of packages should be installed.
 #' @param rVersion The version of R to use as the basis of package installation.
@@ -253,18 +263,23 @@ installAllPackages2 <- function(branch = 'Predictive_Dev', buildDir = NULL,
 #   version and the one in the local copy of the SVN repository must match.
 #'  The respository's path is determined by the alteryx.svndir global options
 #'  setting.
+#' @param type Should the set of packages be based on the packages used in
+#'  the previous predictive installer ("last"), or on the set of packages
+#'  explicitly used by the predictive tools ("min").
 #' @param repos The CRAN repository to use for package installation. The
 #'  default is https://cloud.r-project.org.
 #' @export
 install_CRAN_pkgs <- function(currentRVersion,
                               installation = c("dev", "svn"),
+                              type = c("last", "min"),
                               repos = "https://cloud.r-project.org") {
   installation <- match.arg(installation)
+  type <- match.arg(type)
   # Stop Mac users from harming themselves
   runFromWindows()
   # Bootstrap the process using the packages associated with the current
   # version of R being used
-  curPkgs_l <- listInstalledPackages(rVersion = currentRVersion)
+  curPkgs_l <- listInstalledPackages(rVersion = currentRVersion, type = type)
   print(curPkgs_l)
   # Get the set of dependencies that match the current packages used. This
   # is needed to determine any new dependencies
@@ -404,6 +419,9 @@ install_Alteryx_pkgs <- function(installation = c("dev", "svn"),
 #   version and the one in the local copy of the SVN repository must match.
 #'  The respository's path is determined by the alteryx.svndir global options
 #'  setting.
+#' @param type Should the set of packages be based on the packages used in
+#'  the previous predictive installer ("last"), or on the set of packages
+#'  explicitly used by the predictive tools ("min").
 #' @param readmeManifest A logical flag indicating whether the Readme file
 #'  and the manifest file are saved after installing all the
 #'  needed package. This is only relevant for installing packages into the SVN
@@ -422,13 +440,17 @@ install_Alteryx_pkgs <- function(installation = c("dev", "svn"),
 #' @export
 install_all_pkgs <- function(currentRVersion,
                              installation = c("dev", "svn"),
+                             type = c("last", "min"),
                              readmeManifest = TRUE,
                              dataXPath = NULL,
                              repos = "https://cloud.r-project.org",
                              useGitHub = FALSE,
                              ayxDepend = NULL) {
+  installation <- match.arg(installation)
+  type <- match.arg(type)
   installedCranPkgs_vc <- install_CRAN_pkgs(currentRVersion = currentRVersion,
                                             installation = installation,
+                                            type = type,
                                             repos = repos)
   installedAyxPkgs_vc <- install_Alteryx_pkgs(installation = installation,
                                               dataXPath = dataXPath,
@@ -437,7 +459,7 @@ install_all_pkgs <- function(currentRVersion,
   if (readmeManifest && installation == "svn") {
     svnR_l <- getAyxSvnRDirs()
     # The readme file
-    pkgList_l <- listInstalledPackages()
+    pkgList_l <- listInstalledPackages(type = "last")
     allPkgs_vc <- unlist(pkgList_l)
     allPkgs_vc <- allPkgs_vc[order(allPkgs_vc)]
     readmeFile = file.path(svnR_l$installer, "Readme.txt")
