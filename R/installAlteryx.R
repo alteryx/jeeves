@@ -113,7 +113,7 @@ listInstalledPackages <- function(svnDir = getOption('alteryx.svndir'),
             cran <- setdiff(pkgs, ayxPkgs)
           } else {
             cran <- 
-              as.character(read.csv(file = loadedLoc_sc, header = FALSE)[1])
+              as.character(read.csv(file = loadedLoc_sc, header = FALSE)[[1]])
           }
   list(
     cran = cran,
