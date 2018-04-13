@@ -16,4 +16,3 @@ copyPredictiveMacro(macro, to = ".", ...)
 \description{
 Copy predictive macro
 }
-

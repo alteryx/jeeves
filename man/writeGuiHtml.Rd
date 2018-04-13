@@ -16,4 +16,3 @@ writeGuiHtml(pluginDir = ".", htmlFile = NULL, overrides = NULL)
 \description{
 Write Gui HTML for plugin
 }
-

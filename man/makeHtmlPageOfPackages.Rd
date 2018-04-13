@@ -14,4 +14,3 @@ makeHtmlPageOfPackages(svnDir = getOption("alteryx.svndir"), saveTo = NULL)
 \description{
 Make Html Page for list of packages.
 }
-

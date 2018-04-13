@@ -1,13 +1,14 @@
 Package: jeeves
 Type: Package
 Title: A helper for developing predictive tools in Alteryx
-Version: 0.6.9
+Version: 0.7.0
 Date: 2015-09-09
 Authors@R: c(
     person("Ramnath", "Vaidyanathan", role = c("aut", "cre"), email = "ramnath@alteryx.com"),
+    person("Dan", "Putler", role = "ctb", email = "dputler@alteryx.com"),
     person("Alteryx", role = c("cph", "fnd"))
   )
-Maintainer: Ramnath Vaidyanathan <ramnath@alteryx.com>
+Maintainer: Dan Putler <dputler@alteryx.com>
 Description: Helper functions for Alteryx.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -19,10 +20,10 @@ Imports:
     jsonlite,
     xml2,
     plyr,
-    flightdeck
+    flightdeck,
+    miniCRAN
 Suggests:
   drat,
-  miniCRAN,
   base64enc,
   rmarkdown,
   whisker,
@@ -34,7 +35,7 @@ Suggests:
   downloader,
   stringr,
   webshot
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 VignetteBuilder: knitr
 URL: https://github.com/alteryx/jeeves
 BugReports: https://github.com/alteryx/jeeves/issues

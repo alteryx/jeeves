@@ -12,4 +12,3 @@ writeLayoutFromYamlSpec2(pluginDir = ".")
 \description{
 Write layout file from a YAML spec
 }
-

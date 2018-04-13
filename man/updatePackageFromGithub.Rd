@@ -33,6 +33,7 @@ This function tries to automate the following manual sequence of steps.
   \item Copy the folder over to SVN.
 }
 }
+
 \examples{
 # Set path to your SVN directory using options(alteryx.svndir = <path>)
 \dontrun{
@@ -40,4 +41,3 @@ This function tries to automate the following manual sequence of steps.
   updatePluginFromSvn('Linear_Regression')
 }
 }
-

@@ -12,4 +12,3 @@ getSamplesDir(rVersion = getRversion())
 \description{
 Get samples directory
 }
-

@@ -12,4 +12,3 @@ runWorkflow2(file)
 \description{
 Run an Alteryx workflow
 }
-

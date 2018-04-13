@@ -14,4 +14,3 @@ jvContent(..., .list = NULL)
 \description{
 Create a content div
 }
-

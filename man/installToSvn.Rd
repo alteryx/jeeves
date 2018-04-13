@@ -16,4 +16,3 @@ installToSvn(srcPkg, to_install = TRUE, rVersion = getRversion())
 \description{
 Install packages to R library in SVN
 }
-

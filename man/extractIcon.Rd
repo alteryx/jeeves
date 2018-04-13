@@ -14,4 +14,3 @@ extractIcon(yxmc, out)
 \description{
 Extract icon from macro
 }
-

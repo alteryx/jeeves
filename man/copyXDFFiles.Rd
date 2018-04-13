@@ -14,4 +14,3 @@ copyXDFFiles(svnDir = getOption("alteryx.svndir"), rVersion = getRversion())
 \description{
 Copy XDF files from SVN
 }
-

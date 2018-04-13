@@ -16,4 +16,3 @@ makeSubSection(subsection, config, ...)
 \description{
 Make a subsection
 }
-

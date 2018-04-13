@@ -16,4 +16,3 @@ runTests2(pluginDir = ".", build_doc = FALSE, testDir = "Tests")
 \description{
 Run tests
 }
-

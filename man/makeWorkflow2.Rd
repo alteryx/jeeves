@@ -18,4 +18,3 @@ makeWorkflow2(template, repl, outFile, collapse = ",")
 \description{
 Make an Alteryx workflow
 }
-

@@ -29,4 +29,3 @@ makeWorkflow(template, data, config, inputs_id, config_id, comment_id = NULL,
 \description{
 Make a workflow
 }
-

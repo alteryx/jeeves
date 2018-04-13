@@ -16,4 +16,3 @@ writeLayoutFromYamlSpec(pluginDir = ".", displayRules = c(), ...)
 \description{
 Write layout from a yaml spec file
 }
-

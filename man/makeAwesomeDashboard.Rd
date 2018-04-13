@@ -12,4 +12,3 @@ makeAwesomeDashboard(svnDir = getOption("alteryx.svndir"))
 \description{
 Make awesome test dashboard
 }
-

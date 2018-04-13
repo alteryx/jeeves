@@ -18,4 +18,3 @@ a named list containing paths to the R library and
 \description{
 Get Alteryx R SVN Directories
 }
-

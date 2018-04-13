@@ -19,4 +19,3 @@ This function does three things
   \item Installs plugin to the htmlplugins folder in Alteryx.
 }
 }
-

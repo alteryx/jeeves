@@ -1,3 +1,22 @@
+orderLibPaths <- function(x = .libPaths()){
+  mro = grep("Microsoft", x)
+  alteryx = grep("Alteryx", x)
+  if ((length(mro) > 0) || (length(alteryx) > 0)){
+    lp <- c(x[mro], x[alteryx], x[-c(mro, alteryx)])
+  } else {
+    lp <- x
+  }
+  createLibDir <- function(envVar){
+    fpath <- file.path(Sys.getenv(envVar), 'Alteryx', 'R-library')
+    if (!dir.exists(fpath)) dir.create(fpath, showWarnings = FALSE)
+    if (dir.exists(fpath)) fpath else NULL
+  }
+  ayxPDPath <- createLibDir('ALLUSERSPROFILE')
+  ayxAppDirPath <- createLibDir('APPDATA')
+
+  c(ayxAppDirPath, ayxPDPath, lp)
+}
+
 .onLoad <- function(libname, pkgname){
   if (!('package:AlteryxRDataX' %in% search())){
     # packageStartupMessage('Setting AlteryxFullUpdate to FALSE')
@@ -23,4 +42,5 @@
   } else {
     # options(error = dump_and_quit)
   }
+  #.libPaths(orderLibPaths())
 }

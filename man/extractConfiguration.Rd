@@ -21,4 +21,3 @@ Extract question constants and their configuration from macro
 yxmc <- system.file("templates", "sample1.yxmc", package = 'jeeves')
 d <- extractConfiguration(yxmc)
 }
-

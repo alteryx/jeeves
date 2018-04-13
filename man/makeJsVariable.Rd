@@ -14,4 +14,3 @@ makeJsVariable(x, name)
 \description{
 Make a javascript variable
 }
-

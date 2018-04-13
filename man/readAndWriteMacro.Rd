@@ -12,4 +12,3 @@ readAndWriteMacro(pluginDir = ".")
 \description{
 Read and write a macro
 }
-

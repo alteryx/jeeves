@@ -18,4 +18,3 @@ Scaffold a new plugin with a predictive macro
 Other scaffold: \code{\link{scaffoldPluginFromMacro}},
   \code{\link{scaffoldWorkflow}}
 }
-

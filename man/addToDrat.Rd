@@ -17,4 +17,3 @@ addToDrat(pkg, cleanup = TRUE, ...)
 \description{
 Add package to drat repo
 }
-

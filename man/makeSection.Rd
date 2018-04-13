@@ -14,4 +14,3 @@ makeSection(section, config)
 \description{
 Make a section
 }
-

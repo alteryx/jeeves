@@ -12,4 +12,3 @@ jvHeader(...)
 \description{
 Create a header
 }
-

@@ -2,7 +2,7 @@
 % Please edit documentation in R/installAlteryx.R
 \name{installAllPackages2}
 \alias{installAllPackages2}
-\title{Install all packages}
+\title{Install All Needed Packages V2}
 \usage{
 installAllPackages2(branch = "Predictive_Dev", buildDir = NULL,
   ayxRepo = "https://alteryx.github.io/drat",
@@ -18,6 +18,10 @@ installAllPackages2(branch = "Predictive_Dev", buildDir = NULL,
 \item{buildRepo}{build repo.}
 }
 \description{
-Install all packages
+Alteryx packages, with the exception of AlteryxRDataX, are installed from
+the Alteryx drat repo on GitHub, while AlteryxRDataX is installed from
+either the binary installer of the package of the most recent nightly
+build of the specified branch, or from a local a local directory. The local
+directory option would allow for an installation of AlteryxRDataX from
+source.
 }
-

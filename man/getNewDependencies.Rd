@@ -12,4 +12,3 @@ getNewDependencies(pkg)
 \description{
 Get new dependencies for a package
 }
-

@@ -13,4 +13,3 @@ listPredictiveMacros(...)
 This returns a list of predictive macros in Alteryx. The list can be filtered
 by passing additional arguments to the \code{\link{dir}} function.
 }
-

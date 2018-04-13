@@ -19,4 +19,3 @@ makeIcon(iconPath, shape = "circle", fill = sample(colors(), 1),
 \description{
 Make a circular or square icon and save it to a png file.
 }
-

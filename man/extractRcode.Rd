@@ -17,4 +17,3 @@ object with this name}
 \description{
 Save R code extracted from an Alteryx Macro
 }
-

@@ -12,4 +12,3 @@ insertRcode2(pluginDir = ".")
 \description{
 Syntactic sugar for insertRcode to cover the most common usage pattern.
 }
-

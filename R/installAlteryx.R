@@ -84,17 +84,39 @@ runFromWindows <- function(){
   }
 }
 
-# List all installed packages
-listInstalledPackages <- function(
-    svnDir = getOption('alteryx.svndir'),
-    rVersion = NULL                                
-  ){
+#' List of all installed packages used in Alteryx's Predictive tools
+#'
+#' A vector of all added packages in an SVN installation of a version of R.
+#' This is done by reading the Readme.txt file in the /3rdParty/R/Installer
+#' directory. The packages are in a named list identifying those from CRAN
+#' and those from Alteryx
+#'
+#' @param svnDir Path to the local copy of a SVN branch of Alteryx.
+#' @param type Should the set of packages be based on the packages used in
+#'  the previous predictive installer ("last"), or on the set of packages
+#'  explicitly used by the predictive tools ("min").
+#' @param rVersion The version of R to use as the basis of package installation.
+#'   For a completely new version of R, this will likely be the last version.
+#' @export
+listInstalledPackages <- function(svnDir = getOption('alteryx.svndir'),
+                                  type = c("last", "min"),
+                                  rVersion = NULL) {
+  type <- match.arg(type)
   rdirs <- getAyxSvnRDirs(svnDir = svnDir, rVersion = rVersion)
-  readmeFile = file.path(rdirs$installer, "Readme.txt")
-  pkgs <- readLines(readmeFile, warn = FALSE)
-  ayxPkgs <- grep("^Alteryx", pkgs, value = TRUE)
+  allPkgs_mc <- installed.packages(lib.loc = rdirs$lib)
+  pkgs <- allPkgs_mc[is.na(allPkgs_mc[, "Priority"]), "Package"]
+  # Remove the translations package
+  pkgs <- pkgs[pkgs != "translations"]
+  ayxPkgs <- c(grep("^Alteryx", pkgs, value = TRUE), "flightdeck")
+  loadedLoc_sc <- paste0(svnDir, "/3rdParty/R/loaded_pkgs.txt")
+  cran <- if (type == "last") {
+            cran <- setdiff(pkgs, ayxPkgs)
+          } else {
+            cran <- 
+              as.character(read.csv(file = loadedLoc_sc, header = FALSE)[[1]])
+          }
   list(
-    cran = setdiff(pkgs, ayxPkgs),
+    cran = cran,
     alteryx = ayxPkgs
   )
 }
@@ -132,13 +154,17 @@ writeRPluginIni <- function(revo = FALSE, replace = FALSE){
   }
 }
 
-#' Install all needed packages that are missing
+#' Install All Needed Packages
 #'
-#' @param dev boolean indicating if dev versions of packages should be installed.
+#' @param dev Boolean indicating if dev versions of packages should be installed.
+#' @param rVersion The version of R to use as the basis of package installation.
+#'  This optional argument will typically be used when moving to a new version of
+#'  R, when the natural source of packages were those packages in the current
+#'  version of R used by Alteryx.
 #' @export
-installAllPackages <- function(dev = TRUE){
+installAllPackages <- function(dev = TRUE, rVersion = NULL){
   runFromWindows()
-  cranPkgs <- listInstalledPackages()$cran
+  cranPkgs <- listInstalledPackages(rVersion = rVersion)$cran
   existing_packages <- row.names(installed.packages())
   needed_packages <- cranPkgs[!(cranPkgs %in% existing_packages)]
   if (length(.libPaths()) == 1) {
@@ -146,6 +172,7 @@ installAllPackages <- function(dev = TRUE){
   } else {
     lib <- .libPaths()[2]
   }
+  # Install any needed R packages
   if (length(needed_packages) > 0){
     message("Installing packages ")
     message(paste(needed_packages, collapse = "\n"))
@@ -153,6 +180,8 @@ installAllPackages <- function(dev = TRUE){
   }
   ayxPackages <- c("AlteryxSim", "AlteryxPredictive",
    "AlteryxPrescriptive", "AlteryxRDataX",  "AlteryxRviz")
+  # The full paths to the binary packages to be installed. This is based on
+  # installing the packages from a local directory
   ayxPackages <- file.path(getOption('dev.dir'), 'dev',
     'AlteryxRPackage', ayxPackages)
   requireNamespace('devtools')
@@ -162,7 +191,14 @@ installAllPackages <- function(dev = TRUE){
   })
 }
 
-#' Install all packages
+#' Install All Needed Packages V2
+#'
+#' Alteryx packages, with the exception of AlteryxRDataX, are installed from
+#' the Alteryx drat repo on GitHub, while AlteryxRDataX is installed from
+#' either the binary installer of the package of the most recent nightly
+#' build of the specified branch, or from a local a local directory. The local
+#' directory option would allow for an installation of AlteryxRDataX from
+#' source.
 #' 
 #' @param branch string indicating svn branch.
 #' @param buildDir build directory.
@@ -183,10 +219,12 @@ installAllPackages2 <- function(branch = 'Predictive_Dev', buildDir = NULL,
     lib <- .libPaths()[2]
   }
   message("Installing AlteryxRDataX...")
-  if (is.null(buildDir)){
+  if (is.null(buildDir)) {
+    # Determine the most recent build for the desired branch
     builds <-  dir(buildRepo, pattern = branch, full.names = TRUE)
     buildDir <- tail(builds, 1)
   }
+  # The path to the *binary* installer from the most recent build of the branch
   RDataX <- list.files(file.path(buildDir, 'R'), pattern = 'AlteryxRDataX_', 
     full.names = TRUE)
   install.packages(RDataX, repos = NULL)
@@ -198,8 +236,262 @@ installAllPackages2 <- function(branch = 'Predictive_Dev', buildDir = NULL,
   } else {
     message("Updating R Packages")
     ayxPkgs <- grep("^Alteryx", requiredPkgs, value = TRUE)
+    # The line below may not work as expected, since it does not have a
+    # specified repository, and default repositories have not been specified,
+    # via the use of options(), unless it is assumed the user had already
+    # done this.
     install.packages(ayxPkgs)
     update.packages() 
+  }
+}
+
+#' Install CRAN Packages needed for Alteryx predictive tools
+#'
+#' The function can be used to install needed CRAN packages for the predictive
+#' tools to either a user's development R installation or the R installation in
+#' the user's local copy of the SVN repository of an Alteryx development
+#' branch. NOTE: To use this function, the R session being used must be running
+#' in administrator mode to allow for appropriate read/write permissions.
+#'
+#' @param currentRVersion The current version of R being used by Alteryx's
+#'  predictive tools.
+#' @param installation One of "dev" or "svn". In the case of "dev", the
+#'  needed CRAN packages are installed into the system library of the user's
+#'  development installation of R. When "svn" is selected, then the packages
+#'  are installed to the system library of the R installation located in the
+#'  user's local copy of the relevant SVN repository. The development R
+#   version and the one in the local copy of the SVN repository must match.
+#'  The respository's path is determined by the alteryx.svndir global options
+#'  setting.
+#' @param type Should the set of packages be based on the packages used in
+#'  the previous predictive installer ("last"), or on the set of packages
+#'  explicitly used by the predictive tools ("min").
+#' @param repos The CRAN repository to use for package installation. The
+#'  default is https://cloud.r-project.org.
+#' @export
+install_CRAN_pkgs <- function(currentRVersion,
+                              installation = c("dev", "svn"),
+                              type = c("last", "min"),
+                              repos = "https://cloud.r-project.org") {
+  installation <- match.arg(installation)
+  type <- match.arg(type)
+  # Stop Mac users from harming themselves
+  runFromWindows()
+  # Bootstrap the process using the packages associated with the current
+  # version of R being used
+  curPkgs_l <- listInstalledPackages(rVersion = currentRVersion, type = type)
+  print(curPkgs_l)
+  # Get the set of dependencies that match the current packages used. This
+  # is needed to determine any new dependencies
+  allCranDeps_vc <- miniCRAN::pkgDep(curPkgs_l$cran, suggests = FALSE)
+  # The set of dependencies will include recommended packages which will
+  # already be installed, the lines below find these packages and removes
+  # the from the set of packages to install 
+  pkgPriority_vc <- installed.packages()[, "Priority"]
+  pkgPriority_vc[is.na(pkgPriority_vc)] <- "optional"
+  recoPkgs_vc <- names(pkgPriority_vc[pkgPriority_vc == "recommended"])
+  cranPkgs_vc <- allCranDeps_vc[!(allCranDeps_vc %in% recoPkgs_vc)]
+  # Address the installation type
+  installPlace_sc <- if (installation == "dev") {
+                      "development R installation.\n"
+                    } else {
+                      "copy of the SVN repository.\n"
+                    }
+  libLoc_sc <- if (installation == "dev") {
+                 .libPaths()[1]
+               } else {
+                 getAyxSvnRDirs()$lib
+               }
+  availPkgs_vc <- row.names(installed.packages(lib.loc = libLoc_sc))
+  cranPkgs_vc <-
+    cranPkgs_vc[!(cranPkgs_vc %in% availPkgs_vc)]
+  # Install the packages
+  msg_sc <- paste("Installing",
+                  length(cranPkgs_vc),
+                  "CRAN packages to the local",
+                  installPlace_sc)
+  cat(msg_sc)
+  insPkgs_vc <- row.names(installed.packages(lib.loc = libLoc_sc))
+  while (!all(cranPkgs_vc %in% insPkgs_vc)) {
+    missPkgs_vc <- cranPkgs_vc[!(cranPkgs_vc %in% insPkgs_vc)]
+    install.packages(missPkgs_vc, lib = libLoc_sc, repos = repos)
+    insPkgs_vc <- row.names(installed.packages(lib.loc = libLoc_sc))
+  }
+  cranPkgs_vc
+}
+
+#' Install Alteryx R packages
+#'
+#' The function can be used to install Altery's R packages to either a
+#' user's development R installation or the R installation in the user's
+#' local copy of the SVN repository of an Alteryx development branch.
+#' NOTE: To use this function, the R session being used must be running
+#' in administrator mode to allow for appropriate read/write permissions.
+#'
+#' @param installation One of "dev" or "svn". In the case of "dev", the
+#'  needed CRAN packages are installed into the system library of the user's
+#'  development installation of R. When "svn" is selected, then the packages
+#'  are installed to the system library of the R installation located in the
+#'  user's local copy of the relevant SVN repository. The development R
+#   version and the one in the local copy of the SVN repository must match.
+#'  The respository's path is determined by the alteryx.svndir global options
+#'  setting.
+#' @param dataXPath The local full path to an appropriate binary installer of
+#'  the AlteryxRDataX package. If its value is NULL, then no attempt will be
+#'  made to install the package.
+#' @param useGitHub Install the Alteryx predictive packages other than
+#'  AlteryxRDataX from Alteryx's CRAN like repository on GitHub at
+#'  https://alteryx.github.io/drat. The default is FALSE.
+#' @param ayxDepend A character vector of CRAN packages that Alteryx packages
+#'  depend on since the last version, but are not a dependency of other CRAN
+#'  packages.
+#' @export
+install_Alteryx_pkgs <- function(installation = c("dev", "svn"),
+                                 dataXPath = NULL,
+                                 useGitHub = FALSE,
+                                 ayxDepend = NULL) {
+  installation <- match.arg(installation)
+  # Stop Mac users from harming themselves
+  runFromWindows()
+  # Address the installation type
+  installPlace_sc <- if (installation == "dev") {
+                      "to the local development R installation"
+                    } else {
+                      "to the local copy of the SVN repository"
+                    }
+  libLoc_sc <- if (installation == "dev") {
+                 .libPaths()[1]
+               } else {
+                 getAyxSvnRDirs()$lib
+               }
+  # Address dependencies for Alteryx package, but not the other CRAN packages
+  if (length(ayxDepend) > 0) {
+    install.packages(ayxDepend,
+                     repos = "https://cloud.r-project.org",
+                     lib = libLoc_sc)
+  }
+  # Install AlteryxRDataX if dataXPath is not NULL
+  if (!is.null(dataXPath)) {
+    message(paste0("Installing AlteryxDataX to ", installPlace_sc, "."))
+    install.packages(dataXPath, repos = NULL, lib = libLoc_sc)
+  }
+  # Install Alteryx R packages other than AlteryxRDataX
+  ayxPackages_vc <- c("AlteryxSim",
+                      "flightdeck",
+                      "AlteryxRviz",
+                      "AlteryxPredictive",
+                      "AlteryxPrescriptive")
+  msg1 <- paste0("Installing Alteryx packages other than AlteryxRDataX to ",
+                 installPlace_sc,
+                 ".")
+  message(paste0(msg1))
+  if (useGitHub) {
+    withr::with_libpaths(libLoc_sc, {
+      install.packages(ayxPackages_vc,
+                       repos = "https://alteryx.github.io/drat",
+                       lib = libLoc_sc)})
+  } else {
+    fullPaths_vc <- paste0(getOption("alteryx.svndir"),
+                           "/Alteryx/Plugins/AlteryxRPackage/",
+                           ayxPackages_vc)
+    requireNamespace('devtools')
+    install_ <- devtools::install
+    withr::with_libpaths(libLoc_sc, {
+      lapply(fullPaths_vc, install_)
+    })
+  }
+  c(ayxDepend, ayxPackages_vc)
+}
+
+#' Install All Packages Needed for Alteryx Predictive Tools
+#'
+#' The function can be used to install Altery's R packages to either a
+#' user's development R installation or the R installation in the user's
+#' local copy of the SVN repository of an Alteryx development branch.
+#' NOTE: To use this function, the R session being used must be running
+#' in administrator mode to allow for appropriate read/write permissions.
+#'
+#' @param installation One of "dev" or "svn". In the case of "dev", the
+#'  needed CRAN packages are installed into the system library of the user's
+#'  development installation of R. When "svn" is selected, then the packages
+#'  are installed to the system library of the R installation located in the
+#'  user's local copy of the relevant SVN repository. The development R
+#   version and the one in the local copy of the SVN repository must match.
+#'  The respository's path is determined by the alteryx.svndir global options
+#'  setting.
+#' @param type Should the set of packages be based on the packages used in
+#'  the previous predictive installer ("last"), or on the set of packages
+#'  explicitly used by the predictive tools ("min").
+#' @param readmeManifest A logical flag indicating whether the Readme file
+#'  and the manifest file are saved after installing all the
+#'  needed package. This is only relevant for installing packages into the SVN
+#'  R installation.
+#' @param dataXPath The local full path to an appropriate binary installer of
+#'  the AlteryxRDataX package. If its value is NULL, then no attempt will be
+#'  made to install the package.
+#' @param repos The CRAN repository to use for package installation. The
+#'  default is https://cloud.r-project.org.
+#' @param useGitHub Install the Alteryx predictive packages other than
+#'  AlteryxRDataX from Alteryx's CRAN like repository on GitHub.
+#'  The default is FALSE.
+#' @param ayxDepend A character vector of CRAN packages that Alteryx packages
+#'  depend on since the last version, but are not a dependency of other CRAN
+#'  packages.
+#' @export
+install_all_pkgs <- function(currentRVersion,
+                             installation = c("dev", "svn"),
+                             type = c("last", "min"),
+                             readmeManifest = TRUE,
+                             dataXPath = NULL,
+                             repos = "https://cloud.r-project.org",
+                             useGitHub = FALSE,
+                             ayxDepend = NULL) {
+  installation <- match.arg(installation)
+  type <- match.arg(type)
+  installedCranPkgs_vc <- install_CRAN_pkgs(currentRVersion = currentRVersion,
+                                            installation = installation,
+                                            type = type,
+                                            repos = repos)
+  installedAyxPkgs_vc <- install_Alteryx_pkgs(installation = installation,
+                                              dataXPath = dataXPath,
+                                              useGitHub = useGitHub,
+                                              ayxDepend = ayxDepend)
+  if (readmeManifest && installation == "svn") {
+    svnR_l <- getAyxSvnRDirs()
+    # The readme file
+    pkgList_l <- listInstalledPackages(type = "last")
+    allPkgs_vc <- unlist(pkgList_l)
+    allPkgs_vc <- allPkgs_vc[order(allPkgs_vc)]
+    readmeFile = file.path(svnR_l$installer, "Readme.txt")
+    writeLines(allPkgs_vc, readmeFile)
+    mrsFile = file.path(svnR_l$installer, "../MRSInstaller", "Readme.txt")
+    writeLines(allPkgs_vc, mrsFile)
+    revoFile = file.path(svnR_l$installer, "../RevoInstaller", "Readme.txt")
+    writeLines(allPkgs_vc, revoFile)
+    # The manifest file
+    suppressWarnings(
+      man1_mc <- summary(packageStatus(lib.loc = svnR_l$lib,
+                         repositories = "https://cran.cnr.berkeley.edu"))
+    )
+    suppressWarnings(
+      man2_mc <-
+        man1_mc$inst[, c("Package", "Version", "Status", "Priority", "Built")]
+    )
+    rownames(man2_mc) <- NULL
+    write.csv(man2_mc,
+              file = file.path(svnR_l$installer, "../Scripts", "packages.csv"),
+              row.names = F)
+  }
+  if (installation == "svn") {
+    ayxPackages_vc <- c("AlteryxSim",
+                      "flightdeck",
+                      "AlteryxRviz",
+                      "AlteryxPredictive",
+                      "AlteryxPrescriptive")
+    if (!is.null(dataXPath)) {
+      ayxPackages_vc <- c(ayxPackages_vc, "AlteryxRDataX")
+    }
+    remove.packages(ayxPackages_vc, lib = svnR_l$lib)
   }
 }
 

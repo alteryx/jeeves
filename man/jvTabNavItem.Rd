@@ -16,4 +16,3 @@ jvTabNavItem(..., id, active = FALSE)
 \description{
 Create a tab nav item
 }
-

@@ -16,4 +16,3 @@ jvAccordionItem(title, ..., id = makeHtmlId(title))
 \description{
 Create an accordion item
 }
-

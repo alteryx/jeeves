@@ -12,4 +12,3 @@ makeGallery(files)
 \description{
 Create a gallery
 }
-
