@@ -14,5 +14,4 @@ test:
       - R -e 'install.packages(c("devtools", "roxygen2"), dependencies = TRUE)'
       - R -e 'library(devtools)'
       - R -e 'library(roxygen2)'
-      - R -e 'devtools::test()'
       - R -e 'devtools::check()'
