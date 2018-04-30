@@ -411,6 +411,7 @@ install_Alteryx_pkgs <- function(installation = c("dev", "svn"),
 #' NOTE: To use this function, the R session being used must be running
 #' in administrator mode to allow for appropriate read/write permissions.
 #'
+#' @param currentRVersion current version of R
 #' @param installation One of "dev" or "svn". In the case of "dev", the
 #'  needed CRAN packages are installed into the system library of the user's
 #'  development installation of R. When "svn" is selected, then the packages
