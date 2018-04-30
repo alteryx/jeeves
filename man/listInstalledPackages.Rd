@@ -4,10 +4,15 @@
 \alias{listInstalledPackages}
 \title{List of all installed packages used in Alteryx's Predictive tools}
 \usage{
-listInstalledPackages(svnDir = getOption("alteryx.svndir"), rVersion = NULL)
+listInstalledPackages(svnDir = getOption("alteryx.svndir"), type = c("last",
+  "min"), rVersion = NULL)
 }
 \arguments{
 \item{svnDir}{Path to the local copy of a SVN branch of Alteryx.}
+
+\item{type}{Should the set of packages be based on the packages used in
+the previous predictive installer ("last"), or on the set of packages
+explicitly used by the predictive tools ("min").}
 
 \item{rVersion}{The version of R to use as the basis of package installation.
 For a completely new version of R, this will likely be the last version.}

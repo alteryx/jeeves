@@ -5,11 +5,13 @@
 \title{Install All Packages Needed for Alteryx Predictive Tools}
 \usage{
 install_all_pkgs(currentRVersion, installation = c("dev", "svn"),
-  readmeManifest = TRUE, dataXPath = NULL,
+  type = c("last", "min"), readmeManifest = TRUE, dataXPath = NULL,
   repos = "https://cloud.r-project.org", useGitHub = FALSE,
   ayxDepend = NULL)
 }
 \arguments{
+\item{currentRVersion}{current version of R}
+
 \item{installation}{One of "dev" or "svn". In the case of "dev", the
 needed CRAN packages are installed into the system library of the user's
 development installation of R. When "svn" is selected, then the packages
@@ -17,6 +19,10 @@ are installed to the system library of the R installation located in the
 user's local copy of the relevant SVN repository. The development R
 The respository's path is determined by the alteryx.svndir global options
 setting.}
+
+\item{type}{Should the set of packages be based on the packages used in
+the previous predictive installer ("last"), or on the set of packages
+explicitly used by the predictive tools ("min").}
 
 \item{readmeManifest}{A logical flag indicating whether the Readme file
 and the manifest file are saved after installing all the

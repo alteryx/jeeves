@@ -5,7 +5,7 @@
 \title{Install CRAN Packages needed for Alteryx predictive tools}
 \usage{
 install_CRAN_pkgs(currentRVersion, installation = c("dev", "svn"),
-  repos = "https://cloud.r-project.org")
+  type = c("last", "min"), repos = "https://cloud.r-project.org")
 }
 \arguments{
 \item{currentRVersion}{The current version of R being used by Alteryx's
@@ -18,6 +18,10 @@ are installed to the system library of the R installation located in the
 user's local copy of the relevant SVN repository. The development R
 The respository's path is determined by the alteryx.svndir global options
 setting.}
+
+\item{type}{Should the set of packages be based on the packages used in
+the previous predictive installer ("last"), or on the set of packages
+explicitly used by the predictive tools ("min").}
 
 \item{repos}{The CRAN repository to use for package installation. The
 default is https://cloud.r-project.org.}
