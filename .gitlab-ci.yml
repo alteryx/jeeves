@@ -6,7 +6,7 @@ test:
       - apt-get install -y --no-install-recommends libcurl4-openssl-dev libssh2-1-dev libssl-dev git
       - apt-get install -y --no-install-recommends qpdf pandoc pandoc-citeproc
       - export _R_CHECK_CRAN_INCOMING_=FALSE
-      - export _R_CHECK_FORCE_SUGGESTS_=TRUE
+      - export _R_CHECK_FORCE_SUGGESTS_=FALSE
       - apt-get install -y libssl-dev
       - apt-get install -y --no-install-recommends libxml2-dev
       - apt-get update
