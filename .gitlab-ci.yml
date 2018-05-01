@@ -11,7 +11,12 @@ test:
       - apt-get install -y --no-install-recommends libxml2-dev
       - apt-get update
       - apt-get upgrade -y
-      - R -e 'install.packages(c("devtools", "roxygen2"), dependencies = TRUE)'
+      - R -e 'install.packages(c("devtools", "roxygen2", "XML"), dependencies = TRUE)'
       - R -e 'library(devtools)'
       - R -e 'library(roxygen2)'
-      - R -e 'devtools::check()'
+      - R -e 'library(XML)'
+      - R -e 'install.packages(c("drat", "downloader", "webshot", "DT", "plyr", "miniCRAN"), dependencies = TRUE)'
+      - R -e 'devtools::install_github("alteryx/flightdeck")'
+      - R CMD build . --no-build-vignettes --no-manual
+      - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
+      - R CMD check "${PKG_FILE_NAME}" --no-build-vignettes --no-manual

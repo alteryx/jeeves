@@ -3,6 +3,7 @@ Type: Package
 Title: A helper for developing predictive tools in Alteryx
 Version: 0.7.0
 Date: 2015-09-09
+Author: Alteryx Analytics Products <analyticsproducts@alteryx.com>
 Authors@R: c(
     person("Ramnath", "Vaidyanathan", role = c("aut", "cre"), email = "ramnath@alteryx.com"),
     person("Dan", "Putler", role = "ctb", email = "dputler@alteryx.com"),
