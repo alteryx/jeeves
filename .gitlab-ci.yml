@@ -6,7 +6,7 @@ test:
       - apt-get install -y --no-install-recommends libcurl4-openssl-dev libssh2-1-dev libssl-dev git
       - apt-get install -y --no-install-recommends qpdf pandoc pandoc-citeproc
       - export _R_CHECK_CRAN_INCOMING_=FALSE
-      - export _R_CHECK_FORCE_SUGGESTS_=FALSE
+      - export _R_CHECK_FORCE_SUGGESTS_=TRUE
       - apt-get install -y libssl-dev
       - apt-get install -y --no-install-recommends libxml2-dev
       - apt-get update
@@ -15,6 +15,7 @@ test:
       - R -e 'library(devtools)'
       - R -e 'library(roxygen2)'
       - R -e 'library(XML)'
+      - R -e 'install.packages(c("drat", "downloader", "webshot"), dependencies = TRUE)'
       - R CMD build . --no-build-vignettes --no-manual
       - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
       - R CMD check "${PKG_FILE_NAME}" --no-build-vignettes --no-manual
